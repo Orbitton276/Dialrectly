@@ -1,0 +1,76 @@
+<resources>
+    <string name="app_name">DIALRECTLY</string>
+    //Error msg
+    <string name="errorPasswordPattern">Please enter 6-16 characters password, at least one capital,lower and digit</string>
+    <string name="errorReEnteredPasswordPattern">Must retype the same password</string>
+    //TextViews
+    <string name="OrSeparatorTextView">OR</string>
+    <string name="emailTextView">אימייל</string>
+    <string name="displayNameTextView">שם מלא</string>
+    <string name="phoneTextView">טלפון(אופציונלי)</string>
+    <string name="idTextView">(אופציונלי)</string>
+    <string name="reEnterPassTextView">אימות סיסמה</string>
+    <string name="passwordTextView">סיסמה</string>
+    <string name="ForgotPasswordTextView">שכחתי סיסמה</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+
+    //Buttons
+
+    <string name="signUpButtonText">הירשם</string>
+    <string name="signInButtonText">היכנס</string>
+    <string name="facebookButtonText">Continue with Facebook</string>
+    <string name="googleButtonText">Google</string>
+    <string name="anonymousSignButtonText">  Continue anonymously</string>
+    <string name="toSignUpButtonText">הירשם עכשיו</string>
+    <string name="signOutButtonText">התנתק</string>
+    <string name="resetPasswordButtonText">אפס סיסמה</string>
+    <string name="privacyPolicySwitchedOn">האם אתה מרשה לספק מידע שיישמר במערכת על מנת לאפשר הזנת שדות אוטומטית ובכך להנות מהאפליקציה?</string>
+    <string name="privacyPolicySwitchedOff">האם אתה מאשר שלא יישמר שום מידע במערכת, ותאלץ להקליד מחדש כל מידע אישי. במידה ותאשר כל מידע שהיה שמור על משתמש זה ימחק</string>
+
+
+
+    <string name="facebook_app_id">277129522997590</string>
+    <string name="fb_login_protocol_scheme">fb277129522997590</string>
+
+
+    <string-array name="Category">
+
+        <item>None</item>
+        <item>Wands</item>
+        <item>Clothing</item>
+        <item>Books</item>
+        <item>Jewellery</item>
+        <item>Sweets</item>
+    </string-array>
+
+    <string-array name="SortBy">
+
+        <item>Price</item>
+        <item>Rating</item>
+
+    </string-array>
+
+    //Spacial Tabs
+    <string name="wait_tab">,</string>
+    <string name="skip_tab">#</string>
+    <string name="skip_tab_fixed">%23</string>
+
+    //Messages
+    <string name="customer_service">לשירות לקוחות</string>
+    <string name="technical_service">לתמיכה טכנית</string>
+    <string name="existing_customer">לקוח קיים</string>
+    <string name="new_customer">לקוח חדש</string>
+    <string name="enter_phone_number">מספר טלפון</string>
+    <string name="enter_id">תעודת זהות</string>
+
+    //Database
+    <string name="main_services_route">Menus/</string>
+    <string name="all">הכל/</string>
+
+
+</resources>
+
+

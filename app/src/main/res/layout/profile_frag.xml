@@ -1,0 +1,122 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/layoutTop"
+        android:layout_width="match_parent"
+        android:background="@drawable/profile_gardient"
+        android:layout_height="220dp" >
+
+
+        <ImageView
+            android:id="@+id/btnRotate"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="100dp"
+            android:src="@drawable/ic_rotate"/>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutBottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/layoutTop" >
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="פרטים אישיים"
+            android:textSize="30dp"
+            android:id="@+id/title"
+            android:layout_gravity="center"
+            android:layout_marginTop="80dp"
+            android:gravity="center"
+            />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_below="@+id/title"
+            android:layout_height="34dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:id="@+id/fullName"
+            android:text="שם מלא" />
+
+        <EditText
+            android:id="@+id/frName"
+            android:layout_below="@id/fullName"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:maxLines="1"
+            android:gravity="center"
+            />
+        <TextView
+            android:layout_below="@id/frName"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:id="@+id/email"
+            android:text="אימייל"
+            android:gravity="center" />
+        <EditText
+            android:id="@+id/frEmail"
+            android:layout_width="match_parent"
+            android:maxLines="1"
+            android:layout_below="@+id/email"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+
+            android:gravity="center"
+            />
+
+        <Button
+            android:id="@+id/btnEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/frEmail"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/btn_style"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="עריכה" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/btnSwitchPrivacy"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+
+            android:layout_below="@id/btnEdit"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="31dp"
+            android:gravity="center"
+            android:text="הגדרות פרטיות"
+            android:textOff="איני מסכים"
+            android:textOn="מסכים"
+            android:thumb="@drawable/privacythumb" />
+
+    </RelativeLayout>
+
+
+
+    <ImageView
+        android:id="@+id/imgProfile"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:src="@drawable/ic_launcher_background"
+        android:layout_above="@id/layoutBottom"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-90dp"
+        android:adjustViewBounds="true"
+        android:clickable="true" />
+
+</RelativeLayout>

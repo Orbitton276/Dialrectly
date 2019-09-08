@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".corridorActivity">
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_height="200dp">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:text="לכניסה"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/btn_style"
+            android:id="@+id/btnToSignIn"/>
+        <Button
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="להרשמה"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/btn_style"
+            android:id="@+id/btnToSignUp"/>
+        <Button
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="המשך לתפריטי החברות"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/btn_style"
+            android:id="@+id/btnToServices"/>
+
+    </LinearLayout>
+
+</LinearLayout>

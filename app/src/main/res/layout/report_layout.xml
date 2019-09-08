@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="דווח על בעיה"
+        android:textSize="30dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:text="Title"
+            android:textSize="30dp"
+            android:layout_gravity="center"
+            android:id="@+id/imgService"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Service name"
+            android:textSize="30dp"
+            android:layout_gravity="center"
+            android:id="@+id/tvServiceName"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Last Call Item"
+            android:textSize="20dp"
+            android:layout_gravity="center"
+            android:id="@+id/tvLastCallItem"/>
+
+        <Button
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="לא התבצע חיוג"
+            android:id="@+id/btnOption1"
+            android:background="@drawable/btn_style3"/>
+        <Button
+            android:layout_width="140dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="התבצע חיוג לא תקין"
+            android:id="@+id/btnOption2"
+            android:background="@drawable/btn_style3"/>
+        <Button
+            android:layout_marginTop="10dp"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:id="@+id/btnOption3"
+            android:text="אחר"
+            android:background="@drawable/btn_style3"/>
+
+        <EditText
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:hint="כתוב כאן מה הבעיה"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:maxLines="3"
+            android:lines="3"
+            android:layout_gravity="center"
+            android:id="@+id/tvBody"/>
+
+        <Button
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="שלח דיווח"
+            android:id="@+id/btnSendReport"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/btn_style"/>
+
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

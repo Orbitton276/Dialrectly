@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    >
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="560dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="רישום משתמש"
+            android:textSize="30dp" />
+
+
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:alpha="0.7"
+            android:ems="10"
+            android:hint="@string/emailTextView"
+            android:inputType="textPersonName"
+            android:selectAllOnFocus="true"
+            android:textAlignment="center"
+            android:textSize="18dp" />
+
+        <EditText
+            android:id="@+id/etDisplayName"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:alpha="0.7"
+            android:ems="10"
+            android:hint="@string/displayNameTextView"
+            android:inputType="textPersonName"
+            android:selectAllOnFocus="true"
+            android:textAlignment="center"
+            android:textSize="18dp" />
+
+
+        <EditText
+            android:id="@+id/etPhone"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:alpha="0.7"
+            android:ems="10"
+            android:hint="@string/phoneTextView"
+            android:inputType="textPassword"
+            android:selectAllOnFocus="true"
+            android:textAlignment="center"
+            android:textSize="18dp" />
+
+        <EditText
+            android:id="@+id/etID"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:alpha="0.7"
+            android:ems="10"
+            android:hint="@string/idTextView"
+            android:inputType="textPassword"
+            android:selectAllOnFocus="true"
+            android:textAlignment="center"
+            android:textSize="18dp" />
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:alpha="0.7"
+            android:ems="10"
+            android:hint="@string/passwordTextView"
+            android:inputType="textPassword"
+            android:selectAllOnFocus="true"
+            android:textAlignment="center"
+            android:textSize="18dp" />
+
+        <EditText
+            android:id="@+id/etReEnterPassword"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:alpha="0.7"
+            android:ems="10"
+            android:hint="@string/reEnterPassTextView"
+            android:inputType="textPassword"
+            android:selectAllOnFocus="true"
+            android:textAlignment="center"
+            android:textSize="18dp" />
+
+
+        <Button
+            android:id="@+id/bSubmit"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:onClick="onEmailPasswordSignUpClick"
+            android:text="@string/signUpButtonText"
+            android:textAllCaps="false"
+            android:textSize="18dp" />
+    </LinearLayout>
+
+</android.support.v7.widget.LinearLayoutCompat>

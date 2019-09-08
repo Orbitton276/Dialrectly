@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="280dp"
+    android:background="@drawable/profile_gardient"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="16dp"
+
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+
+    <TextView
+        android:layout_gravity="center"
+        android:id="@+id/tvHeader_email"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:textSize="20dp"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:layout_marginTop="10dp"
+        android:id="@+id/imgHeader"
+        android:layout_gravity="center"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@mipmap/ic_launcher_round" />
+
+    <TextView
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:id="@+id/tvHeader_hello_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="שלום"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+
+
+</LinearLayout>

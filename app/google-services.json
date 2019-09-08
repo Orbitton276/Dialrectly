@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "817544366122",
+    "firebase_url": "https://dialrectly.firebaseio.com",
+    "project_id": "dialrectly",
+    "storage_bucket": "dialrectly.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:817544366122:android:b1d7a4240fb9314e",
+        "android_client_info": {
+          "package_name": "com.mta.sadna19.sadna"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "817544366122-ds1pvoqpeicrmhetvesd32e6a8436kir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnXWE21o-p8VobgiiutQuckbe6_ED3AGk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "817544366122-ds1pvoqpeicrmhetvesd32e6a8436kir.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
