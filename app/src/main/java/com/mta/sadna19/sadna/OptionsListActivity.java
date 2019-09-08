@@ -14,11 +14,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mta.sadna19.sadna.Adapter.OptionAdapter;
+import com.mta.sadna19.sadna.MenuRegisters.DataOption;
 import com.mta.sadna19.sadna.MenuRegisters.MenuFactory.Factory;
 import com.mta.sadna19.sadna.MenuRegisters.Option;
 import com.squareup.picasso.Picasso;
@@ -127,8 +129,14 @@ public class OptionsListActivity extends AppCompatActivity {
         m_logic.setOnOptionSelectedListener(new LogicSystem.SelectedListener() {
             @Override
             public void onOptionSelected(Option i_op) {
-                    m_OptionAdapter.updateAdapter(i_op);
-                    m_OptionAdapter.notifyDataSetChanged();
+                switch (i_op.getType()){
+                    case "DataOption":
+                        DataOption dataOpt = (DataOption)i_op;
+                        mServerHandler.writeUserAttribute(dataOpt.getDataType(),dataOpt.getKeys());
+                        break;
+                }
+                m_OptionAdapter.updateAdapter(i_op);
+                m_OptionAdapter.notifyDataSetChanged();
             }
         });
         m_logic.setOnBackSelectedListener(new LogicSystem.BackListener() {
@@ -155,6 +163,26 @@ public class OptionsListActivity extends AppCompatActivity {
 
                 //startActivity(intent);
                 //finish();
+            }
+        });
+        m_OptionAdapter.setOnOptionViewCreatedListener(new OptionAdapter.OnOptionViewCreatedListener() {
+            @Override
+            public void OnOptionViewCreated(OptionAdapter.OptionViewHolder iViewHolder) {
+                switch (iViewHolder.getOption().getType()){
+                    case "DataOption":
+                        Log.e("$testt$","case DataOption");
+                        final OptionAdapter.DataOptionViewHolder vh = (OptionAdapter.DataOptionViewHolder) iViewHolder;
+                        mServerHandler.SetOnAttributeFetchedListener(new ServerHandler.OnAttributeFetchedListener() {
+                            @Override
+                            public void OnAtttibuteFetch(String i_attributeValue) {
+                                Log.e("$testt$","OnAtttibuteFetch" + i_attributeValue);
+                                vh.SetDataText(i_attributeValue);
+                            }
+                        });
+                        Log.e("$testt$","fetchUserAttribute " + ((DataOption)vh.getOption()).getDataType());
+                        mServerHandler.fetchUserAttribute(((DataOption)vh.getOption()).getDataType());
+                        break;
+                }
             }
         });
     }

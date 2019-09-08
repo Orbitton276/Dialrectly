@@ -260,13 +260,14 @@ public class ServerHandler {
     public void fetchUserAttribute(final String i_userAttribute) {
         FirebaseUser fbusr = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbusr.getUid());
-        DatabaseReference userDataRef = userRef.child("UserData");
+        DatabaseReference userDataRef = userRef.child("User Data");
         userDataRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String userAttribute = dataSnapshot.child(i_userAttribute).getValue().toString();
-                if (mOnAttributeFetcherListener != null)
+                if (mOnAttributeFetcherListener != null && dataSnapshot.child(i_userAttribute).getValue() != null){
+                    String userAttribute = dataSnapshot.child(i_userAttribute).getValue().toString();
                     mOnAttributeFetcherListener.OnAtttibuteFetch(userAttribute);
+                }
             }
 
             @Override
