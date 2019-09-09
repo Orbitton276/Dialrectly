@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -18,7 +19,7 @@ import android.view.ViewGroup;
 import android.content.Context;
 import android.widget.Spinner;
 
-import com.mta.sadna19.sadna.Adapter.CategoryAdapter;
+import com.mta.sadna19.sadna.Adapter.CategoryRecyclerAdapter;
 import com.mta.sadna19.sadna.Adapter.MenuAdapter;
 import com.mta.sadna19.sadna.Adapter.SpinnerListener;
 import com.mta.sadna19.sadna.MenuRegisters.Option;
@@ -36,15 +37,16 @@ public class HomeFrag extends Fragment  {
 
     private static final String OPTION_SELECTED = "OPTION_SELECTED";
     public static final String TAG = "HomeFrag";
-    private Spinner categoriesSpinner;
     RecyclerView mRecyclerView;
+    RecyclerView mCategoriesRecycler;
     ServerHandler mServerHandler;
     User mUser;
     Context mContext;
     Map <String,ArrayList<ServiceItem>> dataMap;
+    private ArrayList<String> mCategoriesList;
+    private CategoryRecyclerAdapter mCategoriesAdapter;
 
     private ArrayList<SpinnerItem> categoryList;
-    private CategoryAdapter categoryAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,51 +61,25 @@ public class HomeFrag extends Fragment  {
         View fragView = inflater.inflate(R.layout.home_frag,null);
         mContext = getActivity().getApplicationContext();
 
-        categoriesSpinner = fragView.findViewById(R.id.categorySpinner);
+        mCategoriesRecycler = fragView.findViewById(R.id.recyclerCategories);
+
+
+        mCategoriesList = new ArrayList<>();
         categoryList = new ArrayList<>();
 
         categoryList.add(new SpinnerItem(" בחר קטגוריה",0));
 
-
-        categoryAdapter = new CategoryAdapter(getActivity(),categoryList, new SpinnerListener(){
-
-            @Override
-            public void onSpinnerItemClicked(SpinnerItem spinnerItem, int position) {
-                Log.e(TAG,"was pressed position=" + spinnerItem.getCategoryName());
-                if (position!=0){
-                    categoriesSpinner.setSelection(position);
-                    hideSpinnerDropDown();
-                    initData(spinnerItem.getCategoryName());
-                }
-
-            }
-        });
-
-        categoriesSpinner.setAdapter(categoryAdapter);
-        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         return fragView;
     }
 
-    public  void hideSpinnerDropDown() {
-        try {
-            Method method = Spinner.class.getDeclaredMethod("onDetachedFromWindow");
-            method.setAccessible(true);
-            method.invoke(categoriesSpinner);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mRecyclerView = view.findViewById(R.id.recyclerServices);
         dataMap = new HashMap<>();
-        //categoryList = new ArrayList<>();
-        //categoriesSpinner = view.findViewById(R.id.categorySpinner);
-        //categoryAdapter = new CategoryAdapter(getActivity(),categoryList);
-        //categoriesSpinner.setAdapter(categoryAdapter);
-        //categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(mContext, 3));
         mServerHandler = new ServerHandler();
@@ -123,6 +99,8 @@ public class HomeFrag extends Fragment  {
                 updateDataMap(i_servicesData);
                 initData("הכל");
                 initList();
+                initCategoriesRecycler();
+
             }
         });
         mServerHandler.SetOnOptionFetchedListener(new ServerHandler.OnOptionFetchedListener() {
@@ -202,5 +180,31 @@ public class HomeFrag extends Fragment  {
                 categoryList.add(new SpinnerItem(entry.getKey(),R.drawable.ic_dot));
             }
         }
+
+
     }
+
+    private void initCategoriesRecycler()
+    {
+        if (dataMap!=null)
+        {
+            for (Map.Entry<String, ArrayList<ServiceItem>> entry : dataMap.entrySet()) {
+                Log.e(TAG,"cat is: "+entry.getKey());
+                mCategoriesList.add(entry.getKey());
+            }
+        }
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
+        mCategoriesRecycler.setLayoutManager(linearLayoutManager);
+        mCategoriesAdapter = new CategoryRecyclerAdapter(getActivity(),mCategoriesList);
+        mCategoriesAdapter.SetOnCategoryClickedListener(new CategoryRecyclerAdapter.OnCategoryItemClickedListener() {
+            @Override
+            public void onCategoryClicked(String i_category) {
+
+                initData(i_category);
+            }
+        });
+        mCategoriesRecycler.setAdapter(mCategoriesAdapter);
+    }
+
+
 }

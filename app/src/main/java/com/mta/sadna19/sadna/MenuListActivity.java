@@ -232,26 +232,30 @@ public class MenuListActivity extends AppCompatActivity implements NavigationVie
         mServerHandler.SetOnUserFetchedListener(new ServerHandler.OnUserFetchedListener() {
             @Override
             public void OnUserFetch(User i_user) {
-
                 fbUser = FirebaseAuth.getInstance().getCurrentUser();
-                if (i_user != null) {
-                    //registered user
-                    Log.e(TAG, "משתמש רשום");
-                    signedUpUser = i_user;
-                } else {
-                    Log.e(TAG, "משתמש נרשם");
-                    //just singed up
-                    if (signedUpUser != null) {
-                        mServerHandler.writeUser(signedUpUser);
+
+                if (i_user!=null)
+                {
+
+                    if (i_user != null) {
+                        //registered user
+                        Log.e(TAG, "משתמש רשום");
+                        signedUpUser = i_user;
                     } else {
-                        Log.e(TAG, "משתמש גוגל לא רשום");
-                        //google and not written in database
-                        signedUpUser = new User();
-                        signedUpUser.setM_email(fbUser.getEmail());
-                        mServerHandler.writeUser(signedUpUser);
+                        Log.e(TAG, "משתמש נרשם");
+                        //just singed up
+                        if (signedUpUser != null) {
+                            mServerHandler.writeUser(signedUpUser);
+                        } else {
+                            Log.e(TAG, "משתמש גוגל לא רשום");
+                            //google and not written in database
+                            signedUpUser = new User();
+                            signedUpUser.setM_email(fbUser.getEmail());
+                            mServerHandler.writeUser(signedUpUser);
+                        }
                     }
+                    initNavigatorHeader();
                 }
-                initNavigatorHeader();
             }
         });
 
@@ -310,6 +314,4 @@ public class MenuListActivity extends AppCompatActivity implements NavigationVie
 
         }
     }
-
-
 }
