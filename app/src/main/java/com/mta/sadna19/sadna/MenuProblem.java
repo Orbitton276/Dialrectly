@@ -52,6 +52,8 @@ public class MenuProblem implements Parcelable {
     private String mLastCallDialPath;
     private String mLastCallPath;
     private String mUserFreeText;
+    private String mClassification;
+    private String mStatus;
     // 11,,2,,3
     //עברי/מכירות/נציגת
 
@@ -79,6 +81,24 @@ public class MenuProblem implements Parcelable {
         dest.writeString(mServiceName);
         dest.writeString(mTittle);
         dest.writeString(mUserFreeText);
+        dest.writeString(mClassification);
+        dest.writeString(mStatus);
+    }
+
+    public String getmClassification() {
+        return mClassification;
+    }
+
+    public void setmClassification(String mClassification) {
+        this.mClassification = mClassification;
+    }
+
+    public String getmStatus() {
+        return mStatus;
+    }
+
+    public void setmStatus(String mStatus) {
+        this.mStatus = mStatus;
     }
 
     protected MenuProblem(Parcel in){
@@ -87,5 +107,7 @@ public class MenuProblem implements Parcelable {
         mServiceName = in.readString();
         mTittle = in.readString();
         mUserFreeText = in.readString();
+        mClassification = in.readString();
+        mStatus = in.readString();
     }
 }

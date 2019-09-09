@@ -36,12 +36,34 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <Button
-        android:id="@+id/btnReportOnProblem"
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="invisible"
-        android:background="@drawable/btn_style"
-        android:text="דווח על בעיה" />
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btnToServices"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/colorWhite"
+            android:visibility="invisible"
+            android:background="@drawable/btn_style"
+            android:text="חזרה לתפריטים" />
+
+        <Button
+            android:textColor="@color/colorWhite"
+
+            android:id="@+id/btnReportOnProblem"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="30dp"
+            android:visibility="invisible"
+            android:background="@drawable/btn_style"
+            android:text="דווח על בעיה" />
+
+    </LinearLayout>
+
 </LinearLayout>

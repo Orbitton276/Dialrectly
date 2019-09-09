@@ -41,10 +41,9 @@ public class SignUpDialog extends AppCompatDialogFragment {
     private EditText mPass, btnReEnterPassword;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private Button btnSignUp;
+    private ServerHandler mServerHandler;
 
     public SignUpDialog() {
-        //googleButtonInit();
-
     }
 
     @Override
@@ -95,65 +94,16 @@ public class SignUpDialog extends AppCompatDialogFragment {
 
 
 
-    public void onEmailPasswordSignUpClick(View V) {
+    private void registerUser()
 
-        Log.e(TAG, "onEmailPasswordSignUpClick() >>");
+    {
+        User newUserToRegister = new User();
+        newUserToRegister.setM_email(mEmail.getText().toString());
+        newUserToRegister.setM_name(mDisplayName.getText().toString());
+        mServerHandler = new ServerHandler();
+        mServerHandler.writeUser(newUserToRegister);
 
-        String email = mEmail.getText().toString();
-        String pass = mPass.getText().toString();
-        String reEnterPassword = btnReEnterPassword.getText().toString();
-
-
-        if (email.isEmpty()) {
-            displayMessage("Please fill in all fields");
-            return;
-        }
-        if (verifyPassword(pass, reEnterPassword)) {
-            Task<AuthResult> authResult;
-            authResult = mAuth.createUserWithEmailAndPassword(email, pass);
-
-
-            authResult.addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-
-                    Log.e(TAG, "Email/Pass Auth: onComplete() >> " + task.isSuccessful());
-                    FirebaseUser user = mAuth.getCurrentUser();
-
-                    if (task.isSuccessful()) {
-                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                .setDisplayName(mDisplayName.getText().toString())
-                                .build();
-
-                        user.updateProfile(profileUpdates)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            Log.d(TAG, "User profile updated.");
-                                        }
-                                    }
-                                });
-                        displayMessage("successfully signed up");
-
-                        Intent intent = new Intent(getActivity(), MenuListActivity.class);
-                        startActivity(intent);
-                        //finish();
-                    } else {
-                        displayMessage("Problem signing up.\ndetails: " + task.getException().getMessage());
-                    }
-
-
-                    Log.e(TAG, "Email/Pass Auth: onComplete() <<");
-                }
-            });
-        }
-
-
-        Log.e(TAG, "onEmailPasswordSignUpClick() <<");
     }
-
 
     public void displayMessage(String message) {
         if (message != null) {
@@ -163,8 +113,10 @@ public class SignUpDialog extends AppCompatDialogFragment {
 
     private boolean verifyPassword(String i_password, String i_reEnteredPassword) {
 
+
         if (mDisplayName.getText().length() < 3) {
             displayMessage("Display name must be at least 3 characters");
+            return false;
         }
         if (i_reEnteredPassword.equals(i_password)) {
             if (!checkPassword(i_password)) {
@@ -192,7 +144,6 @@ public class SignUpDialog extends AppCompatDialogFragment {
 
         return (matcher.matches());
     }
-
 
     public void onEmailPasswordSignUpClick() {
 
@@ -231,6 +182,7 @@ public class SignUpDialog extends AppCompatDialogFragment {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             Log.d(TAG, "User profile updated.");
+                                            registerUser();
                                         }
                                     }
                                 });

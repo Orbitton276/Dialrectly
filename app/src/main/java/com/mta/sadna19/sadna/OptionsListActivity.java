@@ -39,7 +39,7 @@ public class OptionsListActivity extends AppCompatActivity {
     TextView m_menuName;
     ServiceItem mCurrService;
     ServerHandler mServerHandler;
-    Button buttonReport;
+    Button buttonReport,buttonContinueToServices;
     private static final int REQUEST_CODE = 1;
     String m_phoneToDial;
     private FirebaseUser fbUser;
@@ -87,6 +87,15 @@ public class OptionsListActivity extends AppCompatActivity {
         }
 
         buttonReport = findViewById(R.id.btnReportOnProblem);
+        buttonContinueToServices = findViewById(R.id.btnToServices);
+        buttonContinueToServices.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(OptionsListActivity.this,MenuListActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         buttonReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,6 +169,7 @@ public class OptionsListActivity extends AppCompatActivity {
 
                 //======================================================================
                 buttonReport.setVisibility(View.VISIBLE);
+                buttonContinueToServices.setVisibility(View.VISIBLE);
 
                 //startActivity(intent);
                 //finish();

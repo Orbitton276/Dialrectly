@@ -199,7 +199,7 @@ public class MenuListActivity extends AppCompatActivity implements NavigationVie
             tvHeaderEmailUser.setText("צהריים טובים");
 
             //afternoon
-        }else if (hour <=16&&hour < 20)
+        }else if (hour >=16&&hour < 20)
         {
             //evening
             tvHeaderEmailUser.setText("ערב טוב");

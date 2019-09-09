@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Sadna.iml" filepath="$PROJECT_DIR$/Sadna.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Dialrectly.iml" filepath="$PROJECT_DIR$/Dialrectly.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

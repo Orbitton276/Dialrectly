@@ -25,6 +25,7 @@ public class ReportProblemDialog extends AppCompatDialogFragment {
     ImageView imgService;
     ServerHandler mServerHandler;
     String fullPath,dialPath;
+    MenuProblem menuProblem ;
     public interface OnSendReportClicked{
         public void OnSendReport(MenuProblem i_menuProblem);
     }
@@ -51,7 +52,7 @@ public class ReportProblemDialog extends AppCompatDialogFragment {
         tvServiceName = view.findViewById(R.id.tvServiceName);
         tvLastCallItem = view.findViewById(R.id.tvLastCallItem);
         //tvLastCallItem = view.findViewById(R.id.tvServiceName);
-
+        menuProblem = new MenuProblem();
         tvServiceName.setText(getArguments().get("service_name").toString());
         tvLastCallItem.setText(getArguments().get("last_call").toString());
         fullPath = getArguments().get("fullPath").toString();
@@ -65,12 +66,8 @@ public class ReportProblemDialog extends AppCompatDialogFragment {
             @Override
             public void onClick(View v) {
                 //init MenuProblem
-                MenuProblem menuProblem = new MenuProblem();
-                menuProblem.setmServiceName(tvServiceName.getText().toString());
-                //menuProblem.setmTittle(tvTitle.getText().toString());
-                menuProblem.setmUserFreeText(tvFreeText.getText().toString());
-                menuProblem.setmLastCallPath(fullPath);
-                menuProblem.setmLastCallDialPath(dialPath);
+
+                initReport();
                 //mServerHandler.writeAProblem(menuProblem);
                 if (mOnSendReportClicked!=null)
                     mOnSendReportClicked.OnSendReport(menuProblem);
@@ -87,6 +84,7 @@ public class ReportProblemDialog extends AppCompatDialogFragment {
         btnOption1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                menuProblem.setmClassification(btnOption1.getText().toString());
                 btnOption1.setBackground(getResources().getDrawable(R.drawable.btn_style2));
                 btnOption2.setBackground(getResources().getDrawable(R.drawable.btn_style3));
                 btnOption3.setBackground(getResources().getDrawable(R.drawable.btn_style3));
@@ -95,6 +93,8 @@ public class ReportProblemDialog extends AppCompatDialogFragment {
         btnOption2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                menuProblem.setmClassification(btnOption2.getText().toString());
+
                 btnOption2.setBackground(getResources().getDrawable(R.drawable.btn_style2));
                 btnOption1.setBackground(getResources().getDrawable(R.drawable.btn_style3));
                 btnOption3.setBackground(getResources().getDrawable(R.drawable.btn_style3));
@@ -103,11 +103,21 @@ public class ReportProblemDialog extends AppCompatDialogFragment {
         btnOption3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                menuProblem.setmClassification(btnOption3.getText().toString());
                 btnOption3.setBackground(getResources().getDrawable(R.drawable.btn_style2));
                 btnOption2.setBackground(getResources().getDrawable(R.drawable.btn_style3));
                 btnOption1.setBackground(getResources().getDrawable(R.drawable.btn_style3));
             }
         });
     }
+    private void initReport()
+    {
+        menuProblem.setmServiceName(tvServiceName.getText().toString());
+        menuProblem.setmUserFreeText(tvFreeText.getText().toString());
+        menuProblem.setmLastCallPath(fullPath);
+        menuProblem.setmLastCallDialPath(dialPath);
+        menuProblem.setmStatus("ON");
+    }
+
 
 }

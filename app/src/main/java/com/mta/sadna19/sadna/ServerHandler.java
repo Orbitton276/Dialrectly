@@ -31,6 +31,7 @@ public class ServerHandler {
     private onFavoritesServicesFetchedListener mOnFavoritesServicesFetchedListener;
     private onPrivacyPolicyFetchedListener mOnPrivacyPolicyFetchedListener;
     private User mUser;
+    private FirebaseUser fbUsr;
     interface onPrivacyPolicyFetchedListener {
         public void OnPrivacyPolicyFetched(boolean i_privacyPolicy);
     }
@@ -93,6 +94,7 @@ public class ServerHandler {
     }
 
     public ServerHandler() {
+        mUser = new User();
     }
 
     private Option extractMenuTree(DataSnapshot i_dataSnapshot, Option i_menuTree) {
@@ -216,37 +218,35 @@ public class ServerHandler {
 
     public void writeUser(final User user) {
         Log.e(TAG, user.toString());
-        FirebaseUser fbusr = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbusr.getUid()+"/UserObject");
+        fbUsr = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbUsr.getUid()+"/UserObject");
         if (user!=null)
             userRef.setValue(user);
-        FirebaseDatabase.getInstance().getReference("Users/" + fbusr.getUid()).child("PrivacyPolicy").setValue("true");
-        userRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        userRef = FirebaseDatabase.getInstance().getReference("Users/"+fbUsr.getUid()+"/PrivacyPolicy");
+        userRef.setValue("true");
 
 
     }
 
     public void fetchUser(String i_userID) {
-        if (IsUserLogedIn()){
+        /*if (IsUserLogedIn()){
             return;
-        }
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(i_userID).child("UserObject");
-        userRef.addValueEventListener(new ValueEventListener() {
+        }*/
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(i_userID);
+        userRef.child("UserObject").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
                 User user = dataSnapshot.getValue(User.class);
-                if (mOnUserFetcherListener != null)
-                    mOnUserFetcherListener.OnUserFetch(user);
+                if (user!=null)
+                {
+                    Log.e(TAG,"inUserFetch"+user.toString());
+
+                    if (mOnUserFetcherListener != null)
+                        mOnUserFetcherListener.OnUserFetch(user);
+                }
+
             }
 
             @Override
@@ -257,7 +257,9 @@ public class ServerHandler {
         userRef.child("PrivacyPolicy").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getValue().equals("true")) {
+                String val = dataSnapshot.getValue(String.class);
+                Log.e(TAG,"inPP: "+val);
+                if (val.equals("true")) {
                     mUser.SetPrivacyPolicy(true);
                 } else {
                     mUser.SetPrivacyPolicy(false);
@@ -273,8 +275,8 @@ public class ServerHandler {
 
 
     public void fetchUserAttribute(final String i_userAttribute) {
-        FirebaseUser fbusr = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbusr.getUid());
+        fbUsr = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbUsr.getUid());
         DatabaseReference userDataRef = userRef.child("User Data");
         userDataRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -293,21 +295,21 @@ public class ServerHandler {
     }
 
     public void writeUserAttribute(String i_userAttribute, String i_attributeValue) {
-        FirebaseUser fbusr = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbusr.getUid());
+        fbUsr = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbUsr.getUid());
         userRef.child("User Data").child(i_userAttribute).setValue(i_attributeValue);
     }
 
     public void writeUserLastCall(String i_pathName,String i_pathCall) {
-        FirebaseUser fbusr = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbusr.getUid()+"/LastCall");
+        fbUsr = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbUsr.getUid()+"/LastCall");
         userRef.child("lastCallPathName").setValue(i_pathName);
         userRef.child("lastCallPathCall").setValue(i_pathCall);
     }
 
     public void fetchUserLastCall() {
-        FirebaseUser fbusr = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbusr.getUid()+"/LastCall");
+        fbUsr = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbUsr.getUid()+"/LastCall");
         DatabaseReference userDataRef = userRef.child("lastCallPathName");
         userDataRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -327,14 +329,14 @@ public class ServerHandler {
     }
 
     public void writeUserFavoriteServices(Map<String,ServiceItem> i_userFavoritesServices) {
-        FirebaseUser fbusr = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbusr.getUid());
+        fbUsr = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbUsr.getUid());
         userRef.child("Favorites").setValue(i_userFavoritesServices);
     }
 
     public void fetchUserFavoritesServices() {
-        FirebaseUser fbusr = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbusr.getUid());
+        fbUsr = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbUsr.getUid());
         DatabaseReference userDataRef = userRef.child("Favorites");
         userDataRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -372,24 +374,24 @@ public class ServerHandler {
     }
 
     public void onPrivacyPolicySwitchedOff(){
-        FirebaseUser fbusr = FirebaseAuth.getInstance().getCurrentUser();
+        fbUsr = FirebaseAuth.getInstance().getCurrentUser();
 
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbusr.getUid());
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbUsr.getUid());
         userRef.child("UserData").setValue(null);
         userRef.child("PrivacyPolicy").setValue("false");
 
     }
     public void onPrivacyPolicySwitchedOn(){
-        FirebaseUser fbusr = FirebaseAuth.getInstance().getCurrentUser();
+        fbUsr= FirebaseAuth.getInstance().getCurrentUser();
 
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbusr.getUid());
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbUsr.getUid());
         userRef.child("PrivacyPolicy").setValue("true");
     }
 
     public void fetchUserPrivacyPolicy()
     {
-        FirebaseUser fbusr = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbusr.getUid());
+        fbUsr = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbUsr.getUid());
         userRef.child("PrivacyPolicy").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -412,8 +414,8 @@ public class ServerHandler {
     }
 
     public void writeAProblem(MenuProblem i_menuProblem){
-        FirebaseUser fbusr = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Reviews/"+ i_menuProblem.getmServiceName()+"/"+fbusr.getUid());
+        fbUsr = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Reviews/"+ i_menuProblem.getmServiceName()+"/"+fbUsr.getUid());
         userRef.setValue(i_menuProblem);
 
     }
