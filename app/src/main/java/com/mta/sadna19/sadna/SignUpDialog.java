@@ -40,7 +40,6 @@ public class SignUpDialog extends AppCompatDialogFragment {
     private EditText mID, mPhone;
     private EditText mPass, btnReEnterPassword;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private User userr;
     private Button btnSignUp;
 
     public SignUpDialog() {
@@ -70,7 +69,6 @@ public class SignUpDialog extends AppCompatDialogFragment {
         btnReEnterPassword = view.findViewById(R.id.etReEnterPassword);
         mDisplayName = view.findViewById(R.id.etDisplayName);
         mAuth = FirebaseAuth.getInstance();
-        userr = new User();
         firebaseAuthenticationInit();
         return builder.create();
     }
@@ -137,11 +135,9 @@ public class SignUpDialog extends AppCompatDialogFragment {
                                         }
                                     }
                                 });
-                        updateNewUser();
                         displayMessage("successfully signed up");
 
                         Intent intent = new Intent(getActivity(), MenuListActivity.class);
-                        intent.putExtra("user",userr);
                         startActivity(intent);
                         //finish();
                     } else {
@@ -197,23 +193,6 @@ public class SignUpDialog extends AppCompatDialogFragment {
         return (matcher.matches());
     }
 
-    private void updateNewUser() {
-
-
-        if (mPhone != null) {
-            userr.setM_phone(mPhone.getText().toString());
-        }
-        if (mDisplayName != null) {
-            userr.setM_name(mDisplayName.getText().toString());
-        }
-        if (mID != null) {
-            userr.setM_ID(mID.getText().toString());
-        }
-        if (mEmail != null) {
-            userr.setM_email(mEmail.getText().toString());
-        }
-
-    }
 
     public void onEmailPasswordSignUpClick() {
 
@@ -255,11 +234,9 @@ public class SignUpDialog extends AppCompatDialogFragment {
                                         }
                                     }
                                 });
-                        updateNewUser();
                         displayMessage("successfully signed up");
 
                         Intent intent = new Intent(getActivity(), MenuListActivity.class);
-                        intent.putExtra("user",userr);
                         startActivity(intent);
 
                     } else {

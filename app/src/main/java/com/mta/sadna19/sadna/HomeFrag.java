@@ -1,9 +1,13 @@
 package com.mta.sadna19.sadna;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.content.Context;
+import android.view.Window;
 import android.widget.Spinner;
 
 import com.mta.sadna19.sadna.Adapter.CategoryRecyclerAdapter;
@@ -30,11 +35,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.support.v4.app.DialogFragment.STYLE_NO_FRAME;
+
 public class HomeFrag extends Fragment  {
 
     List<ServiceItem> mMenuList;
     MenuAdapter nMenuAdapter;
-
+    private ProgressDialog mLoadingScreen;
     private static final String OPTION_SELECTED = "OPTION_SELECTED";
     public static final String TAG = "HomeFrag";
     RecyclerView mRecyclerView;
@@ -52,6 +59,16 @@ public class HomeFrag extends Fragment  {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        mLoadingScreen = new ProgressDialog(getActivity(),R.style.full_screen_dialog){
+            @Override
+            protected void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+                setContentView(R.layout.fill_dialog);
+                getWindow().setLayout(ViewGroup.LayoutParams.FILL_PARENT,
+                        ViewGroup.LayoutParams.FILL_PARENT);
+            }
+        };
+
     }
 
     @Nullable
@@ -95,12 +112,22 @@ public class HomeFrag extends Fragment  {
         mServerHandler.SetOnServicesFetchedListener(new ServerHandler.OnServicesFetchedListener() {
             @Override
             public void OnServicesFetched(Map<String,ArrayList<ServiceItem>> i_servicesData) {
+                /*new AsyncTask() {
+
+                    @Override
+                    protected void onPreExecute() {
+                    }
+                    @Override
+                    protected Object doInBackground(Object[] objects) {
+                        return null;
+                    }
+                };*/
                 mRecyclerView.setVisibility(View.VISIBLE);
                 updateDataMap(i_servicesData);
                 initData("הכל");
                 initList();
                 initCategoriesRecycler();
-
+                mLoadingScreen.dismiss();
             }
         });
         mServerHandler.SetOnOptionFetchedListener(new ServerHandler.OnOptionFetchedListener() {
@@ -165,6 +192,7 @@ public class HomeFrag extends Fragment  {
     }
 
     private void getData() {
+        mLoadingScreen.show();
         mServerHandler.fetchServices();
     }
 

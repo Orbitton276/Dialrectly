@@ -233,7 +233,9 @@ public class corridorActivity extends AppCompatActivity {
 
             Log.e(TAG,"user already signed up"+user.getUid());
             Log.e(TAG,"user already signed up"+user.getEmail());
+
             Intent intent = new Intent(corridorActivity.this,MenuListActivity.class);
+            intent.putExtra("user",user);
             startActivity(intent);
             finish();
         }

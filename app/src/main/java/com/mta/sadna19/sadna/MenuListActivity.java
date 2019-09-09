@@ -70,7 +70,6 @@ public class MenuListActivity extends AppCompatActivity implements NavigationVie
         switch (menuItem.getItemId()) {
             case R.id.nav_profile: {
 
-                mProfileFrag.setUser(signedUpUser);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mProfileFrag).addToBackStack(null).commit();
 
                 break;
@@ -118,14 +117,12 @@ public class MenuListActivity extends AppCompatActivity implements NavigationVie
     private void init() {
         Log.e(TAG, "init() >>");
         mServerHandler = new ServerHandler();
-        signedUpUser = getIntent().getParcelableExtra("user");
         mHomeFrag = new HomeFrag();
         mFavoritesFrag = new FavoritesFrag();
         mProfileFrag = new ProfileFrag();
 
         drawerManager();
         authManager();
-
         //==========================================================
 
     }
@@ -236,7 +233,6 @@ public class MenuListActivity extends AppCompatActivity implements NavigationVie
 
                 if (i_user!=null)
                 {
-
                     if (i_user != null) {
                         //registered user
                         Log.e(TAG, "משתמש רשום");
@@ -258,8 +254,8 @@ public class MenuListActivity extends AppCompatActivity implements NavigationVie
                 }
             }
         });
-
-
+        mServerHandler.fetchUser(fbUser.getUid());
+        mProfileFrag.setUser(signedUpUser);
     }
 
     private void authDrawerInit()
