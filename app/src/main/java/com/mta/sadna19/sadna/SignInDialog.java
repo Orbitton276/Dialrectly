@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
@@ -37,9 +38,11 @@ public class SignInDialog extends AppCompatDialogFragment {
     private FirebaseRemoteConfig mConfig;
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleSignInOptions gso;
+    private ServerHandler mServerHandler;
     private FirebaseAuth.AuthStateListener mAuthListener;
     //private AccessTokenTracker accessTokenTracker;
     private TextView textView,mEmail,mPass;
+    private FirebaseUser fbUser;
 
     //private AnalyticsManager analyticsManager = AnalyticsManager.getInstance();
     private String signInMethod = null;
@@ -148,6 +151,9 @@ public class SignInDialog extends AppCompatDialogFragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
 
+                            //write user
+                            fbUser = FirebaseAuth.getInstance().getCurrentUser();
+                            registerUser();
                             Intent intent = new Intent(getActivity(), MenuListActivity.class);
                             startActivity(intent);
                             //finish();
@@ -241,5 +247,15 @@ public class SignInDialog extends AppCompatDialogFragment {
     public void onForgotPasswordClicked(){
         Intent intent = new Intent(getActivity(),resetPasswordActivity.class);
         startActivity(intent);
+    }
+
+    private void registerUser()
+
+    {
+        User newUserToRegister = new User();
+        newUserToRegister.setM_email(fbUser.getEmail());
+        mServerHandler = new ServerHandler();
+        mServerHandler.writeUser(newUserToRegister);
+
     }
 }

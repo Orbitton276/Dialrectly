@@ -32,6 +32,15 @@ public class User implements Parcelable {
     private String m_ID;
     private String m_phone;
     private String m_name;
+
+    public boolean getPrivacyPolicy() {
+        return m_PrivacyPolicy;
+    }
+
+    public void setPrivacyPolicy(boolean m_PrivacyPolicy) {
+        this.m_PrivacyPolicy = m_PrivacyPolicy;
+    }
+
     private boolean m_PrivacyPolicy;
 
     public void setM_email(String m_email) {

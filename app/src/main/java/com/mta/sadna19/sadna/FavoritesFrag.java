@@ -56,9 +56,32 @@ public class FavoritesFrag extends Fragment {
     ImageView imgLastCall;
     MenuAdapter mMenuAdapter;
     String LastCall;
+    String LastCallDial;
+    private static final String OPTION_SELECTED = "OPTION_SELECTED";
+
+    private static final int REQUEST_CODE = 1;
+
     private static final String TAG = "onFavoritesFrag";
 
+    OnDialLastCallClicked mOnDialLastCallClicked;
 
+    public interface OnDialLastCallClicked{
+        public void onDialLastCall();
+    }
+
+    public void SetOnDialLastCallListener(OnDialLastCallClicked onDialLastCallClicked){
+        mOnDialLastCallClicked = onDialLastCallClicked;
+    }
+
+    OnFavoritesMenuClicked mOnFavoritesMenuClicked;
+
+    public interface OnFavoritesMenuClicked{
+        public void onDialMenu();
+    }
+
+    public void SetOnFavoritesMenuClicked(OnFavoritesMenuClicked onFavoritesMenuClicked){
+        mOnFavoritesMenuClicked = onFavoritesMenuClicked;
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -68,6 +91,7 @@ public class FavoritesFrag extends Fragment {
         //imgLastCall = fragView.findViewById(R.id.imgLastCall);
         tvLastCall = fragView.findViewById(R.id.tvLastCall);
         tvServiceNameLastCall = fragView.findViewById(R.id.tvServiceNameLastCall);
+        imgLastCall = fragView.findViewById(R.id.btnLastCall);
         mContext = getActivity().getApplicationContext();
         return fragView;
     }
@@ -80,20 +104,37 @@ public class FavoritesFrag extends Fragment {
         mRecyclerView.setLayoutManager(new GridLayoutManager(mContext, 2));
         mServerHandler = new ServerHandler();
         mMenuAdapter = new MenuAdapter(mContext, mFavoritesArray);
-        /*mMenuAdapter.setOnMenuClickListener(new MenuAdapter.OnMenuClickListener() {
+
+        imgLastCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                makeCall(LastCallDial);
+            }
+        });
+        mMenuAdapter.setOnMenuClickListener(new MenuAdapter.OnMenuClickListener() {
             @Override
             public void OnMenuClick(ServiceItem iMenu) {
                 mServerHandler.fetchMenu(iMenu.getM_name());
             }
-        });*/
+        });
         mRecyclerView.setAdapter(mMenuAdapter);
+        mServerHandler.SetOnOptionFetchedListener(new ServerHandler.OnOptionFetchedListener() {
+            @Override
+            public void OnMenuFetch(Option i_opt, ServiceItem i_service) {
+                Intent intent = new Intent(mContext, OptionsListActivity.class);
 
+                intent.putExtra(OPTION_SELECTED, i_opt);
+                intent.putExtra("service", i_service);
+                startActivity(intent);
+            }
+        });
         mServerHandler.SetOnLastCallFetchedListener(new ServerHandler.onLastCallFetchedListener() {
             @Override
-            public void OnLastCallFetched(String i_userLastCall) {
+            public void OnLastCallFetched(String i_userLastCall,String i_userLastCallDial) {
                 LastCall = i_userLastCall;
                 Log.e(TAG,"LastCALL: "+LastCall);
                 tvLastCall.setText(LastCall);
+                LastCallDial = i_userLastCallDial;
 
             }
         });
@@ -153,11 +194,37 @@ public class FavoritesFrag extends Fragment {
         ServiceItem item = new ServiceItem();
         if (mFavoritesArray.size()>0)
             item = mFavoritesArray.get(0);
-        tvServiceNameLastCall.setText(item.getM_name());
+        tvServiceNameLastCall.setText("ב"+item.getM_name());
     }
 
     public FavoritesFrag() {
 
     }
+
+
+    private void makeCall(String i_number) {
+        if (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CODE);
+            makeCall(i_number);
+        } else {
+            //make call
+            String phoneToDial = "tel:" + i_number;
+            startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(phoneToDial)));
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                makeCall(LastCallDial);
+            } else {
+                //permission denied
+            }
+        }
+    }
+
 
 }

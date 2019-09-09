@@ -79,6 +79,9 @@ public class ProfileFrag extends Fragment {
         View fragView = inflater.inflate(R.layout.profile_frag, null);
         rotateButton = fragView.findViewById(R.id.btnRotate);
         switchButton = fragView.findViewById(R.id.btnSwitchPrivacy);
+        name = fragView.findViewById(R.id.frName);
+
+        email = fragView.findViewById(R.id.frEmail);
         switchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,9 +107,7 @@ public class ProfileFrag extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         serverHandler = new ServerHandler();
-        name = view.findViewById(R.id.frName);
 
-        email = view.findViewById(R.id.frEmail);
         editBtn = view.findViewById(R.id.btnEdit);
         userProfilePic = view.findViewById(R.id.imgProfile);
 
@@ -143,13 +144,17 @@ public class ProfileFrag extends Fragment {
         name.setEnabled(false);
 
         email.setEnabled(false);
-        if (user != null) {
-            name.setText(user.getM_name());
+        updateUserUI();
 
-            email.setText(user.getM_email());
-        }
-
-
+        serverHandler.SetOnUserFetchedListener(new ServerHandler.OnUserFetchedListener() {
+            @Override
+            public void OnUserFetch(User i_user) {
+                user = i_user;
+                Log.e(TAG,"User is: "+i_user.toString());
+                updateUserUI();
+            }
+        });
+        serverHandler.fetchUser(fbUser.getUid());
         serverHandler.SetOnPrivacyPolicyFetchedListener(new ServerHandler.onPrivacyPolicyFetchedListener() {
             @Override
             public void OnPrivacyPolicyFetched(boolean i_privacyPolicy) {
@@ -164,16 +169,18 @@ public class ProfileFrag extends Fragment {
 
     }
 
-    public void profile_edit(User user) {
-
-    }
 
     public ProfileFrag() {
 
     }
 
-    public void setUser(User i_user) {
-        user = i_user;
+
+    private void updateUserUI(){
+        if (user != null) {
+            name.setText(user.getM_name());
+
+            email.setText(user.getM_email());
+        }
     }
 
 

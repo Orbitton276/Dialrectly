@@ -46,6 +46,7 @@ public class OptionsListActivity extends AppCompatActivity {
     String LastCallpathName="";
     String LastCallClickedItem="";
     MenuProblem menuProblem;
+    User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,19 +75,10 @@ public class OptionsListActivity extends AppCompatActivity {
     private void init() {
         mServerHandler = new ServerHandler();
         fbUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (fbUser != null) {
-            mServerHandler.SetOnFavoritesServicesFetchedListener(new ServerHandler.onFavoritesServicesFetchedListener() {
-                @Override
-                public void OnFavoritesServicesFetched(Map<String, ServiceItem> i_favoritesServicesArray) {
-
-                    m_userFavoritesMap = new HashMap<>(i_favoritesServicesArray);
-                }
-            });
-            mServerHandler.fetchUserFavoritesServices();
-
-        }
 
         buttonReport = findViewById(R.id.btnReportOnProblem);
+        if (fbUser==null)
+            buttonReport.setVisibility(View.GONE);
         buttonContinueToServices = findViewById(R.id.btnToServices);
         buttonContinueToServices.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,7 +160,8 @@ public class OptionsListActivity extends AppCompatActivity {
                 onAuthenticatedUserCalled();
 
                 //======================================================================
-                buttonReport.setVisibility(View.VISIBLE);
+                if (fbUser!=null)
+                    buttonReport.setVisibility(View.VISIBLE);
                 buttonContinueToServices.setVisibility(View.VISIBLE);
 
                 //startActivity(intent);
@@ -176,24 +169,53 @@ public class OptionsListActivity extends AppCompatActivity {
             }
         });
         if(mServerHandler.IsUserLogedIn()) {
+
+            currentUser = new User();
+            currentUser.setPrivacyPolicy(false);
+            if (fbUser != null) {
+                mServerHandler.SetOnFavoritesServicesFetchedListener(new ServerHandler.onFavoritesServicesFetchedListener() {
+                    @Override
+                    public void OnFavoritesServicesFetched(Map<String, ServiceItem> i_favoritesServicesArray) {
+
+                        m_userFavoritesMap = new HashMap<>(i_favoritesServicesArray);
+                    }
+                });
+                mServerHandler.fetchUserFavoritesServices();
+
+            }
+            mServerHandler.SetOnUserFetchedListener(new ServerHandler.OnUserFetchedListener() {
+                @Override
+                public void OnUserFetch(User i_user) {
+                    currentUser = i_user;
+                }
+            });
+            mServerHandler.fetchUser(fbUser.getUid());
+
+
             m_OptionAdapter.setOnOptionViewCreatedListener(new OptionAdapter.OnOptionViewCreatedListener() {
                 @Override
                 public void OnOptionViewCreated(OptionAdapter.OptionViewHolder iViewHolder) {
-                    switch (iViewHolder.getOption().getType()) {
-                        case "DataOption":
-                            Log.e("$testt$", "case DataOption");
-                            final OptionAdapter.DataOptionViewHolder vh = (OptionAdapter.DataOptionViewHolder) iViewHolder;
-                            mServerHandler.SetOnAttributeFetchedListener(new ServerHandler.OnAttributeFetchedListener() {
-                                @Override
-                                public void OnAtttibuteFetch(String i_attributeValue) {
-                                    Log.e("$testt$", "OnAtttibuteFetch" + i_attributeValue);
-                                    vh.SetDataText(i_attributeValue);
-                                }
-                            });
-                            Log.e("$testt$", "fetchUserAttribute " + ((DataOption) vh.getOption()).getDataType());
-                            mServerHandler.fetchUserAttribute(((DataOption) vh.getOption()).getDataType());
-                            break;
+                    if (mServerHandler.getmUser().getPrivacyPolicy())
+                    {
+                        Log.e(TAG,"PP iss: "+currentUser.getPrivacyPolicy());
+                        switch (iViewHolder.getOption().getType()) {
+
+                            case "DataOption":
+                                Log.e("$testt$", "case DataOption");
+                                final OptionAdapter.DataOptionViewHolder vh = (OptionAdapter.DataOptionViewHolder) iViewHolder;
+                                mServerHandler.SetOnAttributeFetchedListener(new ServerHandler.OnAttributeFetchedListener() {
+                                    @Override
+                                    public void OnAtttibuteFetch(String i_attributeValue) {
+                                        Log.e("$testt$", "OnAtttibuteFetch" + i_attributeValue);
+                                        vh.SetDataText(i_attributeValue);
+                                    }
+                                });
+                                Log.e("$testt$", "fetchUserAttribute " + ((DataOption) vh.getOption()).getDataType());
+                                mServerHandler.fetchUserAttribute(((DataOption) vh.getOption()).getDataType());
+                                break;
+                        }
                     }
+
                 }
             });
         }
@@ -227,6 +249,17 @@ public class OptionsListActivity extends AppCompatActivity {
         }
         newMapToUpdate.put("1",mCurrService);
         return newMapToUpdate;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.e(TAG,"Size before back: "+m_logic.getArraySize());
+        if (!m_logic.isBackToServices())
+            m_logic.Back();
+        else{
+            super.onBackPressed();
+        }
+        Log.e(TAG,"Size after back: "+m_logic.getArraySize());
     }
 
     @Override

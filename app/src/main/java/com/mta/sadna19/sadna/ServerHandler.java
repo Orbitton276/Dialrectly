@@ -30,6 +30,11 @@ public class ServerHandler {
     private onLastCallFetchedListener mOnLastCallFetcherListener;
     private onFavoritesServicesFetchedListener mOnFavoritesServicesFetchedListener;
     private onPrivacyPolicyFetchedListener mOnPrivacyPolicyFetchedListener;
+
+    public User getmUser() {
+        return mUser;
+    }
+
     private User mUser;
     private FirebaseUser fbUsr;
     interface onPrivacyPolicyFetchedListener {
@@ -40,7 +45,7 @@ public class ServerHandler {
     }
 
     interface onLastCallFetchedListener {
-        public void OnLastCallFetched(String i_userLastCall);
+        public void OnLastCallFetched(String i_userLastCall,String i_userLastCallDial);
     }
 
     interface OnAttributeFetchedListener {
@@ -310,14 +315,17 @@ public class ServerHandler {
     public void fetchUserLastCall() {
         fbUsr = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbUsr.getUid()+"/LastCall");
-        DatabaseReference userDataRef = userRef.child("lastCallPathName");
-        userDataRef.addValueEventListener(new ValueEventListener() {
+        //DatabaseReference userDataRef = userRef.child("lastCallPathName");
+        userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String lastCallString = dataSnapshot.getValue(String.class);
+
+
+                String lastCallDial = dataSnapshot.child("lastCallPathCall").getValue(String.class);
+                String lastCallString = dataSnapshot.child("lastCallPathName").getValue(String.class);
                 if (lastCallString!=null)
                     if (mOnLastCallFetcherListener != null)
-                        mOnLastCallFetcherListener.OnLastCallFetched(lastCallString);
+                        mOnLastCallFetcherListener.OnLastCallFetched(lastCallString,lastCallDial);
 
             }
 
@@ -377,7 +385,7 @@ public class ServerHandler {
         fbUsr = FirebaseAuth.getInstance().getCurrentUser();
 
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbUsr.getUid());
-        userRef.child("UserData").setValue(null);
+        userRef.child("User Data").setValue(null);
         userRef.child("PrivacyPolicy").setValue("false");
 
     }
