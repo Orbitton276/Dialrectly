@@ -30,8 +30,7 @@ public class ServerHandler {
     private onLastCallFetchedListener mOnLastCallFetcherListener;
     private onFavoritesServicesFetchedListener mOnFavoritesServicesFetchedListener;
     private onPrivacyPolicyFetchedListener mOnPrivacyPolicyFetchedListener;
-
-
+    private User mUser;
     interface onPrivacyPolicyFetchedListener {
         public void OnPrivacyPolicyFetched(boolean i_privacyPolicy);
     }
@@ -221,8 +220,7 @@ public class ServerHandler {
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbusr.getUid()+"/UserObject");
         if (user!=null)
             userRef.setValue(user);
-
-
+        FirebaseDatabase.getInstance().getReference("Users/" + fbusr.getUid()).child("PrivacyPolicy").setValue("true");
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -235,10 +233,13 @@ public class ServerHandler {
             }
         });
 
+
     }
 
     public void fetchUser(String i_userID) {
-
+        if (IsUserLogedIn()){
+            return;
+        }
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users").child(i_userID).child("UserObject");
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -253,7 +254,21 @@ public class ServerHandler {
 
             }
         });
+        userRef.child("PrivacyPolicy").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue().equals("true")) {
+                    mUser.SetPrivacyPolicy(true);
+                } else {
+                    mUser.SetPrivacyPolicy(false);
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
@@ -407,12 +422,8 @@ public class ServerHandler {
 
     }
 
-
-
-
-
-
-
-
+    public boolean IsUserLogedIn(){
+        return (FirebaseAuth.getInstance().getCurrentUser() != null);
+    }
 }
 

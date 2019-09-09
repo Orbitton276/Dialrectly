@@ -165,26 +165,28 @@ public class OptionsListActivity extends AppCompatActivity {
                 //finish();
             }
         });
-        m_OptionAdapter.setOnOptionViewCreatedListener(new OptionAdapter.OnOptionViewCreatedListener() {
-            @Override
-            public void OnOptionViewCreated(OptionAdapter.OptionViewHolder iViewHolder) {
-                switch (iViewHolder.getOption().getType()){
-                    case "DataOption":
-                        Log.e("$testt$","case DataOption");
-                        final OptionAdapter.DataOptionViewHolder vh = (OptionAdapter.DataOptionViewHolder) iViewHolder;
-                        mServerHandler.SetOnAttributeFetchedListener(new ServerHandler.OnAttributeFetchedListener() {
-                            @Override
-                            public void OnAtttibuteFetch(String i_attributeValue) {
-                                Log.e("$testt$","OnAtttibuteFetch" + i_attributeValue);
-                                vh.SetDataText(i_attributeValue);
-                            }
-                        });
-                        Log.e("$testt$","fetchUserAttribute " + ((DataOption)vh.getOption()).getDataType());
-                        mServerHandler.fetchUserAttribute(((DataOption)vh.getOption()).getDataType());
-                        break;
+        if(mServerHandler.IsUserLogedIn()) {
+            m_OptionAdapter.setOnOptionViewCreatedListener(new OptionAdapter.OnOptionViewCreatedListener() {
+                @Override
+                public void OnOptionViewCreated(OptionAdapter.OptionViewHolder iViewHolder) {
+                    switch (iViewHolder.getOption().getType()) {
+                        case "DataOption":
+                            Log.e("$testt$", "case DataOption");
+                            final OptionAdapter.DataOptionViewHolder vh = (OptionAdapter.DataOptionViewHolder) iViewHolder;
+                            mServerHandler.SetOnAttributeFetchedListener(new ServerHandler.OnAttributeFetchedListener() {
+                                @Override
+                                public void OnAtttibuteFetch(String i_attributeValue) {
+                                    Log.e("$testt$", "OnAtttibuteFetch" + i_attributeValue);
+                                    vh.SetDataText(i_attributeValue);
+                                }
+                            });
+                            Log.e("$testt$", "fetchUserAttribute " + ((DataOption) vh.getOption()).getDataType());
+                            mServerHandler.fetchUserAttribute(((DataOption) vh.getOption()).getDataType());
+                            break;
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
 

@@ -123,7 +123,6 @@ public class HomeFrag extends Fragment  {
                 updateDataMap(i_servicesData);
                 initData("הכל");
                 initList();
-
             }
         });
         mServerHandler.SetOnOptionFetchedListener(new ServerHandler.OnOptionFetchedListener() {

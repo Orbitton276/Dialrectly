@@ -32,6 +32,7 @@ public class User implements Parcelable {
     private String m_ID;
     private String m_phone;
     private String m_name;
+    private boolean m_PrivacyPolicy;
 
     public void setM_email(String m_email) {
         this.m_email = m_email;
@@ -44,7 +45,9 @@ public class User implements Parcelable {
     public User(String email) {
         this.m_email = email;
     }
-    public User(){}
+    public User(){
+        m_PrivacyPolicy = true;
+    }
 
     @Override
     public int describeContents() {
@@ -69,6 +72,7 @@ public class User implements Parcelable {
         dest.writeString(m_ID);
         dest.writeString(m_phone);
         dest.writeString(m_name);
+        dest.writeInt(m_PrivacyPolicy ? 1 : 0);
     }
 
     protected User(Parcel in){
@@ -76,5 +80,11 @@ public class User implements Parcelable {
         m_ID = in.readString();
         m_phone = in.readString();
         m_name = in.readString();
+        m_PrivacyPolicy = in.readInt() == 1;
     }
+
+    public void SetPrivacyPolicy(boolean b) {
+        m_PrivacyPolicy = b;
+    }
+
 }

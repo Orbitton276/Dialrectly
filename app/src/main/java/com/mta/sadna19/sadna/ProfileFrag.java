@@ -138,30 +138,6 @@ public class ProfileFrag extends Fragment {
             @Override
             public void onClick(View v) {
 
-                /*
-                switch (editBtn.getText().toString()) {
-                    case "עריכה": {
-                        editBtn.setText("סיים עריכה");
-                        name.setEnabled(true);
-                        //phone.setEnabled(true);
-                        //id.setEnabled(true);
-                        //email.setClickable(true);
-                        break;
-
-                    }
-                    default: {
-                        editBtn.setText("עריכה");
-                        user.setM_name(name.getText().toString());
-
-
-
-                        serverHandler.writeUser(user);
-                        name.setEnabled(false);
-
-                        email.setEnabled(false);
-                    }
-                }
-*/
             }
         });
         name.setEnabled(false);
@@ -208,7 +184,7 @@ public class ProfileFrag extends Fragment {
         // we need to save its reference to a Uri variable
         pickedImgUri = data.getData();
 
-        Picasso.get().load(pickedImgUri).transform(new CircleTransform()).into(userProfilePic);
+        Picasso.get().load(pickedImgUri).transform(new CircleTransform()).fit().into(userProfilePic);
         updateUserInfo();
 
 
