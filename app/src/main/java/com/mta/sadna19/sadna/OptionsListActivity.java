@@ -39,12 +39,12 @@ public class OptionsListActivity extends AppCompatActivity {
     TextView m_menuName;
     ServiceItem mCurrService;
     ServerHandler mServerHandler;
-    Button buttonReport,buttonContinueToServices;
+    Button buttonReport, buttonContinueToServices;
     private static final int REQUEST_CODE = 1;
     String m_phoneToDial;
     private FirebaseUser fbUser;
-    String LastCallpathName="";
-    String LastCallClickedItem="";
+    String LastCallpathName = "";
+    String LastCallClickedItem = "";
     MenuProblem menuProblem;
     User currentUser;
 
@@ -77,13 +77,13 @@ public class OptionsListActivity extends AppCompatActivity {
         fbUser = FirebaseAuth.getInstance().getCurrentUser();
 
         buttonReport = findViewById(R.id.btnReportOnProblem);
-        if (fbUser==null)
+        if (fbUser == null)
             buttonReport.setVisibility(View.GONE);
         buttonContinueToServices = findViewById(R.id.btnToServices);
         buttonContinueToServices.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(OptionsListActivity.this,MenuListActivity.class);
+                Intent intent = new Intent(OptionsListActivity.this, MenuListActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -113,27 +113,27 @@ public class OptionsListActivity extends AppCompatActivity {
         m_OptionAdapter.setOnOptionSelected(new OptionAdapter.onOptionSelectedListener() {
             @Override
             public void onItemSelected(Option i_op) {
-                if (i_op.getType().equals("Option"))
-                {
-                    if (i_op.getName()!=null){
+                if (i_op.getType().equals("Option")) {
+                    if (i_op.getName() != null) {
                         LastCallClickedItem = i_op.getName();
-                        LastCallpathName=LastCallpathName+"/"+ i_op.getName();
+                        LastCallpathName = LastCallpathName + "/" + i_op.getName();
                     }
 
                 }
 
-                Log.e(TAG,"path: "+LastCallpathName);
-                Log.e(TAG,"path: "+LastCallClickedItem);
+                Log.e(TAG, "path: " + LastCallpathName);
+                Log.e(TAG, "path: " + LastCallClickedItem);
                 m_logic.SelectedOption(i_op);
             }
         });
         m_logic.setOnOptionSelectedListener(new LogicSystem.SelectedListener() {
             @Override
             public void onOptionSelected(Option i_op) {
-                switch (i_op.getType()){
+                switch (i_op.getType()) {
                     case "DataOption":
-                        DataOption dataOpt = (DataOption)i_op;
-                        mServerHandler.writeUserAttribute(dataOpt.getDataType(),dataOpt.getKeys());
+                        DataOption dataOpt = (DataOption) i_op;
+                        if (fbUser != null)
+                            mServerHandler.writeUserAttribute(dataOpt.getDataType(), dataOpt.getKeys());
                         break;
                 }
                 m_OptionAdapter.updateAdapter(i_op);
@@ -160,7 +160,7 @@ public class OptionsListActivity extends AppCompatActivity {
                 onAuthenticatedUserCalled();
 
                 //======================================================================
-                if (fbUser!=null)
+                if (fbUser != null)
                     buttonReport.setVisibility(View.VISIBLE);
                 buttonContinueToServices.setVisibility(View.VISIBLE);
 
@@ -168,7 +168,7 @@ public class OptionsListActivity extends AppCompatActivity {
                 //finish();
             }
         });
-        if(mServerHandler.IsUserLogedIn()) {
+        if (mServerHandler.IsUserLogedIn()) {
 
             currentUser = new User();
             currentUser.setPrivacyPolicy(false);
@@ -195,9 +195,8 @@ public class OptionsListActivity extends AppCompatActivity {
             m_OptionAdapter.setOnOptionViewCreatedListener(new OptionAdapter.OnOptionViewCreatedListener() {
                 @Override
                 public void OnOptionViewCreated(OptionAdapter.OptionViewHolder iViewHolder) {
-                    if (mServerHandler.getmUser().getPrivacyPolicy())
-                    {
-                        Log.e(TAG,"PP iss: "+currentUser.getPrivacyPolicy());
+                    if (mServerHandler.getmUser().getPrivacyPolicy()) {
+                        Log.e(TAG, "PP iss: " + currentUser.getPrivacyPolicy());
                         switch (iViewHolder.getOption().getType()) {
 
                             case "DataOption":
@@ -226,40 +225,38 @@ public class OptionsListActivity extends AppCompatActivity {
 
         if (fbUser != null) {
             mServerHandler.writeUserFavoriteServices(addServiceToFavoriteList());
-            mServerHandler.writeUserLastCall(LastCallClickedItem,m_phoneToDial);
+            mServerHandler.writeUserLastCall(LastCallClickedItem, m_phoneToDial);
         }
     }
 
-    private Map<String,ServiceItem> addServiceToFavoriteList() {
-        Map<String,ServiceItem> newMapToUpdate = new HashMap<>();
-        int newArrayIndex=2;
-        int i=1;
+    private Map<String, ServiceItem> addServiceToFavoriteList() {
+        Map<String, ServiceItem> newMapToUpdate = new HashMap<>();
+        int newArrayIndex = 2;
+        int i = 1;
         for (i = 1; i < 6; i++) {
-            if (m_userFavoritesMap.containsKey(String.valueOf(i)))
-            {
+            if (m_userFavoritesMap.containsKey(String.valueOf(i))) {
                 if (m_userFavoritesMap.get(String.valueOf(i)).getM_name().equals(mCurrService.getM_name()))
                     newArrayIndex--;
                 else
-                    newMapToUpdate.put(String.valueOf(newArrayIndex),m_userFavoritesMap.get(String.valueOf(i)));
-            }
-            else{
+                    newMapToUpdate.put(String.valueOf(newArrayIndex), m_userFavoritesMap.get(String.valueOf(i)));
+            } else {
                 break;
             }
             newArrayIndex++;
         }
-        newMapToUpdate.put("1",mCurrService);
+        newMapToUpdate.put("1", mCurrService);
         return newMapToUpdate;
     }
 
     @Override
     public void onBackPressed() {
-        Log.e(TAG,"Size before back: "+m_logic.getArraySize());
+        Log.e(TAG, "Size before back: " + m_logic.getArraySize());
         if (!m_logic.isBackToServices())
             m_logic.Back();
-        else{
+        else {
             super.onBackPressed();
         }
-        Log.e(TAG,"Size after back: "+m_logic.getArraySize());
+        Log.e(TAG, "Size after back: " + m_logic.getArraySize());
     }
 
     @Override
@@ -286,8 +283,7 @@ public class OptionsListActivity extends AppCompatActivity {
         }
     }
 
-    private void openReportProblemDialog()
-    {
+    private void openReportProblemDialog() {
 
         Bundle bundle = new Bundle();
         bundle.putString("service_name", mCurrService.getM_name());
@@ -302,13 +298,13 @@ public class OptionsListActivity extends AppCompatActivity {
             @Override
             public void OnSendReport(MenuProblem i_menuProblem) {
                 mServerHandler.writeAProblem(i_menuProblem);
-                Intent intent = new Intent(OptionsListActivity.this,MenuListActivity.class);
+                Intent intent = new Intent(OptionsListActivity.this, MenuListActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
         dialog.setArguments(bundle);
-        dialog.show(getSupportFragmentManager(),"");
+        dialog.show(getSupportFragmentManager(), "");
     }
 
 
