@@ -13,8 +13,8 @@ TODO:
 5. Anatlitics + Notifications.?
 6. UI - screens, un/registered user. LINOY
 // 7. Admin Interface to upload menus. MOSHE
-8. Phone permition- make the user to give premition to the app to make call 
+8. Phone permition- make the user to give premition to the app to make call - V
 9. Service work hours - *EACH ONE responsible to update work hours and send in whatsapp*
-10.User contact about damaged service
+10.User contact about damaged service - V
 11.Admin interface to upload menus and review users  
 12.
