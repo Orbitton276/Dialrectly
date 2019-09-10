@@ -186,7 +186,7 @@ public class ProfileFrag extends Fragment {
             }
         });
         serverHandler.fetchUserPrivacyPolicy();
-        setProgressBar(user.getM_points());
+
 
     }
 
@@ -199,7 +199,7 @@ public class ProfileFrag extends Fragment {
     private void updateUserUI(){
         if (user != null) {
             name.setText(user.getM_name());
-
+            setProgressBar(user.getM_points());
             email.setText(user.getM_email());
         }
     }

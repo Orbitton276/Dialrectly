@@ -54,6 +54,7 @@ public class OptionsListActivity extends AppCompatActivity {
     String LastCallClickedItem = "";
     MenuProblem menuProblem;
     User currentUser;
+    boolean disableBackButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,7 @@ public class OptionsListActivity extends AppCompatActivity {
 
     private void init() {
         mServerHandler = new ServerHandler();
-
+        disableBackButton = false;
         fbUser = FirebaseAuth.getInstance().getCurrentUser();
         btnCoins = findViewById(R.id.btnCoins);
         btnNumberOfPoints = findViewById(R.id.pointsNumber);
@@ -177,8 +178,9 @@ public class OptionsListActivity extends AppCompatActivity {
                 //======================================================================
 
                 makeCall(allPressedKeys);
-                onAuthenticatedUserCalled();
 
+                onAuthenticatedUserCalled();
+                disableBackButton = true;
                 //======================================================================
                 if (fbUser != null)
                     buttonReport.setVisibility(View.VISIBLE);
@@ -271,7 +273,7 @@ public class OptionsListActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Log.e(TAG, "Size before back: " + m_logic.getArraySize());
-        if (!m_logic.isBackToServices())
+        if (!m_logic.isBackToServices()&&!disableBackButton)
             m_logic.Back();
         else {
             super.onBackPressed();
