@@ -6,7 +6,7 @@ TODO:
      //user - what details should we save? what not? how to encourage unregistered user to sign up.
     //App screens.
  2. User last call and favorite services - OR&BEN -V
- 3. Categories recyclerView - horizontal  MOSHE & Linoy
+ 3. Categories recyclerView - horizontal  MOSHE & Linoy - V
  4. User-ranking, points,favorites,last calls. your last call was "שירות לקוחות" of "בזק".
  5. Menus presentetion + search filter - MOSHE
 --------------------------------------------- 
