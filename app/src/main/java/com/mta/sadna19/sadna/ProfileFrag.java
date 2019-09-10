@@ -5,8 +5,10 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ExifInterface;
@@ -27,6 +29,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -61,6 +65,8 @@ public class ProfileFrag extends Fragment {
     SwitchCompat switchButton;
     ServerHandler serverHandler;
     Boolean bool;
+    TextView tvProgress,tvProgressLevel;
+    ProgressBar progressBar;
     private static final String TAG = "onProfileFrag";
     private onProfileImageUpdate mOnProfileImageUpdate;
 
@@ -80,7 +86,9 @@ public class ProfileFrag extends Fragment {
         rotateButton = fragView.findViewById(R.id.btnRotate);
         switchButton = fragView.findViewById(R.id.btnSwitchPrivacy);
         name = fragView.findViewById(R.id.frName);
-
+        progressBar = fragView.findViewById(R.id.profileProgressBar);
+        tvProgress = fragView.findViewById(R.id.tvProgress);
+        tvProgressLevel = fragView.findViewById(R.id.tvProgressLevel);
         email = fragView.findViewById(R.id.frEmail);
         switchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,11 +146,23 @@ public class ProfileFrag extends Fragment {
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (name.isEnabled()){
+
+                    name.setEnabled(false);
+                    editBtn.setText("עריכה");
+
+                    user.setM_name(name.getText().toString());
+                    serverHandler.writeUser(user);
+                }
+                else{
+                    name.setEnabled(true);
+                    editBtn.setText("סיים עריכה");
+
+                }
 
             }
         });
         name.setEnabled(false);
-
         email.setEnabled(false);
         updateUserUI();
 
@@ -166,6 +186,7 @@ public class ProfileFrag extends Fragment {
             }
         });
         serverHandler.fetchUserPrivacyPolicy();
+        setProgressBar(user.getM_points());
 
     }
 
@@ -287,6 +308,51 @@ public class ProfileFrag extends Fragment {
     public void onRotateProfilePic() {
         userProfilePic.setRotation(userProfilePic.getRotation() + 90);
 
+    }
+
+    private void setProgressBar(int i_currentPoints)
+    {
+        int startLevel=0;
+        int endLevel=0;
+        int progressToSet=0;
+        double db;
+        if (i_currentPoints>=0&&i_currentPoints<=200)
+        {
+            //level 1
+            tvProgressLevel.setText("טירון");
+            progressBar.setProgressTintList(ColorStateList.valueOf(Color.RED));
+            startLevel=0;
+            endLevel = 200;
+        }
+        else if(i_currentPoints>200&&i_currentPoints<=300){
+            //level 2
+            tvProgressLevel.setText("ותיק בתחום");
+
+            progressBar.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
+
+            startLevel=200;
+            endLevel = 300;
+        }
+        else{
+            //level 3
+            progressBar.setProgressTintList(ColorStateList.valueOf(Color.BLUE));
+            tvProgressLevel.setText("סבא ג'פטו");
+
+            startLevel=300;
+            endLevel = 500;
+            if (i_currentPoints>endLevel)
+            {
+                endLevel = startLevel+1;
+            }
+        }
+        db = ((double)i_currentPoints-startLevel)/(endLevel-startLevel);
+        db = db*100;
+        progressToSet = (int)db;
+
+        tvProgress.setText(i_currentPoints+"/"+endLevel);
+
+        Log.e(TAG,"prog is: "+progressToSet+"start "+startLevel+"end "+endLevel+" db "+db);
+        progressBar.setProgress(progressToSet);
     }
 
 

@@ -31,7 +31,6 @@
     <string name="privacyPolicySwitchedOff">האם אתה מאשר שלא יישמר שום מידע במערכת, ותאלץ להקליד מחדש כל מידע אישי. במידה ותאשר כל מידע שהיה שמור על משתמש זה ימחק</string>
 
 
-
     <string name="facebook_app_id">277129522997590</string>
     <string name="fb_login_protocol_scheme">fb277129522997590</string>
 
@@ -69,6 +68,9 @@
     //Database
     <string name="main_services_route">Menus/</string>
     <string name="all">הכל/</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

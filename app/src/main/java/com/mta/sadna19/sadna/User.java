@@ -33,6 +33,24 @@ public class User implements Parcelable {
     private String m_phone;
     private String m_name;
 
+    public int getM_points() {
+        return m_points;
+    }
+
+    public void setM_points(int m_points) {
+        this.m_points = m_points;
+    }
+
+    public boolean isM_PrivacyPolicy() {
+        return m_PrivacyPolicy;
+    }
+
+    public void setM_PrivacyPolicy(boolean m_PrivacyPolicy) {
+        this.m_PrivacyPolicy = m_PrivacyPolicy;
+    }
+
+    private int m_points;
+
     public boolean getPrivacyPolicy() {
         return m_PrivacyPolicy;
     }
@@ -56,6 +74,7 @@ public class User implements Parcelable {
     }
     public User(){
         m_PrivacyPolicy = true;
+        m_points = 0;
     }
 
     @Override

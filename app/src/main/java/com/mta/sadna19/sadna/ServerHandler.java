@@ -100,6 +100,7 @@ public class ServerHandler {
 
     public ServerHandler() {
         mUser = new User();
+
     }
 
     private Option extractMenuTree(DataSnapshot i_dataSnapshot, Option i_menuTree) {
@@ -435,5 +436,16 @@ public class ServerHandler {
     public boolean IsUserLogedIn(){
         return (FirebaseAuth.getInstance().getCurrentUser() != null);
     }
+
+    public void addPointsToUser(int i_points)
+    {
+        fbUsr = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/"+fbUsr.getUid()+"/UserObject");
+        userRef.child("m_points").setValue(i_points);
+
+    }
+
+
+
 }
 

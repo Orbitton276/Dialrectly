@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -12,11 +13,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mta.sadna19.sadna.Adapter.OptionAdapter;
@@ -27,10 +31,13 @@ import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class OptionsListActivity extends AppCompatActivity {
     public static final String TAG = "$OptionsListActivity$";
     Button btn;
+    ImageButton btnCoins;
+    TextView btnNumberOfPoints;
     ListView m_OptionList;
     Map<String, ServiceItem> m_userFavoritesMap;
     OptionAdapter m_OptionAdapter;
@@ -74,8 +81,10 @@ public class OptionsListActivity extends AppCompatActivity {
 
     private void init() {
         mServerHandler = new ServerHandler();
-        fbUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        fbUser = FirebaseAuth.getInstance().getCurrentUser();
+        btnCoins = findViewById(R.id.btnCoins);
+        btnNumberOfPoints = findViewById(R.id.pointsNumber);
         buttonReport = findViewById(R.id.btnReportOnProblem);
         if (fbUser == null)
             buttonReport.setVisibility(View.GONE);
@@ -92,9 +101,20 @@ public class OptionsListActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //write a report
+                buttonReport.setVisibility(View.GONE);
 
-                openReportProblemDialog();
+                btnNumberOfPoints.setVisibility(View.VISIBLE);
+                btnCoins.setVisibility(View.VISIBLE);
+                YoYo.with(Techniques.ZoomOutUp).duration(2000).playOn(btnCoins);
+                YoYo.with(Techniques.ZoomOutUp).duration(2000).playOn(btnNumberOfPoints);
+                mServerHandler.addPointsToUser(50+currentUser.getM_points());
 
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        openReportProblemDialog();
+                    }
+                }, 2000);
 
             }
         });
