@@ -54,6 +54,7 @@ public class MenuListActivity extends AppCompatActivity implements NavigationVie
     NavigationView navView;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.e(TAG, "onCreate() >>");
@@ -69,7 +70,13 @@ public class MenuListActivity extends AppCompatActivity implements NavigationVie
         Log.e(TAG, "onNavigationItemSelected");
         switch (menuItem.getItemId()) {
             case R.id.nav_profile: {
+                mProfileFrag.SetOnImageUpdateClickListener(new ProfileFrag.onProfileImageUpdate() {
+                    @Override
+                    public void onProfileImageUpdate() {
+                        Picasso.get().load(fbUser.getPhotoUrl()).transform(new CircleTransform()).into(imgHeaderProfilePic);
 
+                    }
+                });
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mProfileFrag).addToBackStack(null).commit();
 
                 break;
@@ -152,6 +159,7 @@ public class MenuListActivity extends AppCompatActivity implements NavigationVie
         startActivity(new Intent(MenuListActivity.this, corridorActivity.class));
         finish();
     }
+
 
     private void initNavigatorHeader() {
 
@@ -307,6 +315,7 @@ public class MenuListActivity extends AppCompatActivity implements NavigationVie
             // the user has successfully picked an image
             // we need to save its reference to a Uri variable
             Log.e(TAG, "onActivityResultMain");
+
             mProfileFrag.onActivityResult(requestCode, resultCode, data);
 
         }

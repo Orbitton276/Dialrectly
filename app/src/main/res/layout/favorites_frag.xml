@@ -54,6 +54,8 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="שיחתכם האחרונה"
+
+            android:textStyle="bold"
             android:textAlignment="center"
             android:textSize="20dp" />
 
@@ -61,7 +63,8 @@
             android:id="@+id/tvLastCall"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:textSize="20dp"
+            android:textSize="15dp"
+            android:text="לא ביצעת שיחה עדיין"
             android:layout_gravity="center"
             android:gravity="center"/>
 
@@ -83,7 +86,6 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="ב"
             android:textSize="20dp" />
 
 
@@ -94,6 +96,7 @@
         android:layout_width="50dp"
         android:layout_gravity="center"
         android:id="@+id/btnLastCall"
+        android:visibility="invisible"
         android:src="@drawable/ic_call"
         android:layout_height="50dp"/>
 </LinearLayout>

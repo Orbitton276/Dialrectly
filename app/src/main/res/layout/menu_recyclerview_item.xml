@@ -22,9 +22,12 @@
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:text="[TEXT]"
+            android:gravity="center"
+            android:autoSizeMaxTextSize="24dp"
             android:textSize="24dp"
+            android:autoSizeTextType="uniform"
             android:textColor="@color/colorPrimaryDark"
             android:textAlignment="center" />
     </LinearLayout>

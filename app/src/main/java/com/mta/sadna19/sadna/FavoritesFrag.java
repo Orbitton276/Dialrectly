@@ -65,28 +65,29 @@ public class FavoritesFrag extends Fragment {
 
     OnDialLastCallClicked mOnDialLastCallClicked;
 
-    public interface OnDialLastCallClicked{
+    public interface OnDialLastCallClicked {
         public void onDialLastCall();
     }
 
-    public void SetOnDialLastCallListener(OnDialLastCallClicked onDialLastCallClicked){
+    public void SetOnDialLastCallListener(OnDialLastCallClicked onDialLastCallClicked) {
         mOnDialLastCallClicked = onDialLastCallClicked;
     }
 
     OnFavoritesMenuClicked mOnFavoritesMenuClicked;
 
-    public interface OnFavoritesMenuClicked{
+    public interface OnFavoritesMenuClicked {
         public void onDialMenu();
     }
 
-    public void SetOnFavoritesMenuClicked(OnFavoritesMenuClicked onFavoritesMenuClicked){
+    public void SetOnFavoritesMenuClicked(OnFavoritesMenuClicked onFavoritesMenuClicked) {
         mOnFavoritesMenuClicked = onFavoritesMenuClicked;
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mServerHandler = new ServerHandler();
-        View fragView = inflater.inflate(R.layout.favorites_frag,null);
+        View fragView = inflater.inflate(R.layout.favorites_frag, null);
         mRecyclerView = fragView.findViewById(R.id.recyclerFavoritesServices);
         //imgLastCall = fragView.findViewById(R.id.imgLastCall);
         tvLastCall = fragView.findViewById(R.id.tvLastCall);
@@ -130,9 +131,9 @@ public class FavoritesFrag extends Fragment {
         });
         mServerHandler.SetOnLastCallFetchedListener(new ServerHandler.onLastCallFetchedListener() {
             @Override
-            public void OnLastCallFetched(String i_userLastCall,String i_userLastCallDial) {
+            public void OnLastCallFetched(String i_userLastCall, String i_userLastCallDial) {
                 LastCall = i_userLastCall;
-                Log.e(TAG,"LastCALL: "+LastCall);
+                Log.e(TAG, "LastCALL: " + LastCall);
                 tvLastCall.setText(LastCall);
                 LastCallDial = i_userLastCallDial;
 
@@ -140,10 +141,10 @@ public class FavoritesFrag extends Fragment {
         });
         mServerHandler.SetOnFavoritesServicesFetchedListener(new ServerHandler.onFavoritesServicesFetchedListener() {
             @Override
-            public void OnFavoritesServicesFetched(Map<String,ServiceItem> i_favoritesServicesMap) {
-                Log.e(TAG,"onFavoritesFetched");
+            public void OnFavoritesServicesFetched(Map<String, ServiceItem> i_favoritesServicesMap) {
+                Log.e(TAG, "onFavoritesFetched");
                 //mRecyclerView.setVisibility(View.VISIBLE);
-                if (i_favoritesServicesMap!=null)
+                if (i_favoritesServicesMap != null)
                     initData(i_favoritesServicesMap);
                 //initLastCall();
             }
@@ -167,20 +168,17 @@ public class FavoritesFrag extends Fragment {
     private void getData() {
         mServerHandler.fetchUserFavoritesServices();
     }
-    private void initData(Map<String,ServiceItem> i_favoritesServices)
-    {
-        Log.e(TAG,i_favoritesServices.toString());
+
+    private void initData(Map<String, ServiceItem> i_favoritesServices) {
+        Log.e(TAG, i_favoritesServices.toString());
         mFavoritesArray.clear();
-        for (int i=1;i<6;i++)
-        {
-            if (i_favoritesServices.containsKey(String.valueOf(i)))
-            {
+        for (int i = 1; i < 6; i++) {
+            if (i_favoritesServices.containsKey(String.valueOf(i))) {
                 ServiceItem item = i_favoritesServices.get(String.valueOf(i));
                 mFavoritesArray.add(item);
-                Log.e(TAG,item.toString());
+                Log.e(TAG, item.toString());
 
-            }
-            else{
+            } else {
                 break;
             }
 
@@ -189,12 +187,14 @@ public class FavoritesFrag extends Fragment {
         mMenuAdapter.setmMenuListFull(new ArrayList<>(mFavoritesArray));
         mRecyclerView.getAdapter().notifyDataSetChanged();
     }
-    private void initLastCall()
-    {
+
+    private void initLastCall() {
         ServiceItem item = new ServiceItem();
-        if (mFavoritesArray.size()>0)
+        if (mFavoritesArray.size() > 0) {
+            imgLastCall.setVisibility(View.VISIBLE);
             item = mFavoritesArray.get(0);
-        tvServiceNameLastCall.setText("ב"+item.getM_name());
+            tvServiceNameLastCall.setText("ב" + item.getM_name());
+        }
     }
 
     public FavoritesFrag() {

@@ -172,6 +172,7 @@ public class ProfileFrag extends Fragment {
                 user = i_user;
                 Log.e(TAG,"User is: "+i_user.toString());
                 updateUserUI();
+
             }
         });
         serverHandler.fetchUser(fbUser.getUid());
