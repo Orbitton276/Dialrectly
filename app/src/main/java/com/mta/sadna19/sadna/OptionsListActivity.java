@@ -36,8 +36,7 @@ import java.util.concurrent.TimeUnit;
 public class OptionsListActivity extends AppCompatActivity {
     public static final String TAG = "$OptionsListActivity$";
     Button btn;
-    ImageButton btnCoins;
-    TextView btnNumberOfPoints;
+
     ListView m_OptionList;
     Map<String, ServiceItem> m_userFavoritesMap;
     OptionAdapter m_OptionAdapter;
@@ -84,8 +83,7 @@ public class OptionsListActivity extends AppCompatActivity {
         mServerHandler = new ServerHandler();
         disableBackButton = false;
         fbUser = FirebaseAuth.getInstance().getCurrentUser();
-        btnCoins = findViewById(R.id.btnCoins);
-        btnNumberOfPoints = findViewById(R.id.pointsNumber);
+
         buttonReport = findViewById(R.id.btnReportOnProblem);
         if (fbUser == null)
             buttonReport.setVisibility(View.GONE);
@@ -103,19 +101,7 @@ public class OptionsListActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //write a report
                 buttonReport.setVisibility(View.GONE);
-
-                btnNumberOfPoints.setVisibility(View.VISIBLE);
-                btnCoins.setVisibility(View.VISIBLE);
-                YoYo.with(Techniques.ZoomOutUp).duration(2000).playOn(btnCoins);
-                YoYo.with(Techniques.ZoomOutUp).duration(2000).playOn(btnNumberOfPoints);
-                mServerHandler.addPointsToUser(50+currentUser.getM_points());
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        openReportProblemDialog();
-                    }
-                }, 2000);
+                openReportProblemDialog();
 
             }
         });
@@ -319,6 +305,7 @@ public class OptionsListActivity extends AppCompatActivity {
         dialog.SetOnSendReportClicked(new ReportProblemDialog.OnSendReportClicked() {
             @Override
             public void OnSendReport(MenuProblem i_menuProblem) {
+                mServerHandler.addPointsToUser(50+currentUser.getM_points());
                 mServerHandler.writeAProblem(i_menuProblem);
                 Intent intent = new Intent(OptionsListActivity.this, MenuListActivity.class);
                 startActivity(intent);

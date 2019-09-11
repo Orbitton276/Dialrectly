@@ -71,7 +71,7 @@ public class ProfileFrag extends Fragment {
     private onProfileImageUpdate mOnProfileImageUpdate;
 
     public interface onProfileImageUpdate {
-        void onProfileImageUpdate();
+        void onProfileImageUpdate(Uri i_uri);
     }
 
     public void SetOnImageUpdateClickListener(onProfileImageUpdate onProfileImageUpdate) {
@@ -138,8 +138,7 @@ public class ProfileFrag extends Fragment {
                     Log.e(TAG, "onOpenGallery>>");
                     openGallery();
                 }
-                if (mOnProfileImageUpdate != null)
-                    mOnProfileImageUpdate.onProfileImageUpdate();
+
 
             }
         });
@@ -214,6 +213,8 @@ public class ProfileFrag extends Fragment {
         pickedImgUri = data.getData();
 
         Picasso.get().load(pickedImgUri).transform(new CircleTransform()).fit().into(userProfilePic);
+        if (mOnProfileImageUpdate != null)
+            mOnProfileImageUpdate.onProfileImageUpdate(pickedImgUri);
         updateUserInfo();
 
 

@@ -4,14 +4,18 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.common.SignInButton;
 import com.squareup.picasso.Picasso;
 
@@ -22,6 +26,8 @@ public class ReportProblemDialog extends AppCompatDialogFragment {
     Button btnOption1,btnOption2,btnOption3,btnReport;
     OnSendReportClicked mOnSendReportClicked;
     TextView tvServiceName,tvLastCallItem,tvTitle,tvFreeText;
+    ImageButton btnCoins;
+    TextView btnNumberOfPoints;
     ImageView imgService;
     ServerHandler mServerHandler;
     String fullPath,dialPath;
@@ -51,6 +57,8 @@ public class ReportProblemDialog extends AppCompatDialogFragment {
         imgService = view.findViewById(R.id.imgService);
         tvServiceName = view.findViewById(R.id.tvServiceName);
         tvLastCallItem = view.findViewById(R.id.tvLastCallItem);
+        btnCoins = view.findViewById(R.id.btnCoins);
+        btnNumberOfPoints = view.findViewById(R.id.pointsNumber);
         //tvLastCallItem = view.findViewById(R.id.tvServiceName);
         menuProblem = new MenuProblem();
         tvServiceName.setText(getArguments().get("service_name").toString());
@@ -67,10 +75,24 @@ public class ReportProblemDialog extends AppCompatDialogFragment {
             public void onClick(View v) {
                 //init MenuProblem
 
-                initReport();
+
+                btnNumberOfPoints.setVisibility(View.VISIBLE);
+                btnCoins.setVisibility(View.VISIBLE);
+                YoYo.with(Techniques.ZoomOutUp).duration(2000).playOn(btnCoins);
+                YoYo.with(Techniques.ZoomOutUp).duration(2000).playOn(btnNumberOfPoints);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        initReport();
+                        if (mOnSendReportClicked!=null)
+                            mOnSendReportClicked.OnSendReport(menuProblem);
+                    }
+                }, 2000);
+
+
                 //mServerHandler.writeAProblem(menuProblem);
-                if (mOnSendReportClicked!=null)
-                    mOnSendReportClicked.OnSendReport(menuProblem);
+
             }
         });
         manageReportOptions();

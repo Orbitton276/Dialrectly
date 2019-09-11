@@ -1,6 +1,7 @@
 package com.mta.sadna19.sadna;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -72,8 +73,8 @@ public class MenuListActivity extends AppCompatActivity implements NavigationVie
             case R.id.nav_profile: {
                 mProfileFrag.SetOnImageUpdateClickListener(new ProfileFrag.onProfileImageUpdate() {
                     @Override
-                    public void onProfileImageUpdate() {
-                        Picasso.get().load(fbUser.getPhotoUrl()).transform(new CircleTransform()).into(imgHeaderProfilePic);
+                    public void onProfileImageUpdate(Uri i_uri) {
+                        Picasso.get().load(i_uri).transform(new CircleTransform()).into(imgHeaderProfilePic);
 
                     }
                 });
