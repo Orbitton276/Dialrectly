@@ -9,135 +9,125 @@
         android:layout_height="220dp" >
 
 
-        <ImageView
-            android:id="@+id/btnRotate"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="100dp"
-            android:src="@drawable/ic_rotate"/>
+
 
 
     </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/layoutBottom"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@id/layoutTop" >
+        android:id="@+id/layoutBottom"
+        android:layout_marginTop="90dp"
 
+        android:layout_below="@id/layoutTop"
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:text="פרטים אישיים"
-            android:textSize="30dp"
-            android:id="@+id/title"
-            android:layout_gravity="center"
-            android:layout_marginTop="80dp"
-            android:gravity="center"
-            />
+        <LinearLayout
 
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_below="@+id/title"
-            android:layout_height="34dp"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:id="@+id/fullName"
-            android:text="שם מלא" />
-
-        <EditText
-            android:id="@+id/frName"
-            android:layout_below="@id/fullName"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:maxLines="1"
-            android:gravity="center"
-            />
-        <TextView
-            android:layout_below="@id/frName"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:id="@+id/email"
-            android:text="אימייל"
-            android:gravity="center" />
-        <EditText
-            android:id="@+id/frEmail"
-            android:layout_width="match_parent"
-            android:maxLines="1"
-            android:layout_below="@+id/email"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-
-            android:gravity="center"
-            />
-
-        <Button
-            android:id="@+id/btnEdit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/frEmail"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/btn_style"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="עריכה" />
-
-        <android.support.v7.widget.SwitchCompat
-            android:id="@+id/btnSwitchPrivacy"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-
-            android:layout_below="@id/btnEdit"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="הגדרות פרטיות"
-            android:textOff="איני מסכים"
-            android:textOn="מסכים"
-            android:thumb="@drawable/privacythumb" />
-
-
-        <TextView
-            android:id="@+id/tvProgress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="abcs"
+            android:layout_below="@id/layoutTop"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
 
-            android:layout_below="@id/btnSwitchPrivacy"
-            android:textAlignment="center"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="6dp" />
 
-        <android.support.v4.widget.ContentLoadingProgressBar
-            android:layout_width="250dp"
-            android:layout_height="40dp"
-            android:id="@+id/profileProgressBar"
-            android:layout_below="@id/tvProgress"
-            android:layout_centerInParent="true"
-            android:layout_centerVertical="true"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_marginTop="-10dp" />
-        <TextView
-            android:id="@+id/tvProgressLevel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            android:text="abcs"
-            android:layout_below="@id/profileProgressBar"
-            android:textAlignment="center"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="0dp" />
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="80dp"
+                android:gravity="center"
+                android:text="פרטים אישיים"
+                android:textSize="30dp" />
 
-    </RelativeLayout>
+
+            <TextView
+                android:id="@+id/fullName"
+                android:layout_width="match_parent"
+                android:layout_height="34dp"
+                android:layout_below="@+id/title"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="שם מלא" />
+
+            <EditText
+                android:id="@+id/frName"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:maxLines="1" />
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="אימייל" />
+
+            <EditText
+                android:id="@+id/frEmail"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+
+                android:maxLines="1" />
+
+            <Button
+                android:id="@+id/btnEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/btn_style"
+                android:gravity="center"
+                android:text="עריכה" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/btnSwitchPrivacy"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="הגדרות פרטיות"
+                android:textOff="איני מסכים"
+                android:textOn="מסכים"
+                android:thumb="@drawable/privacythumb" />
+
+
+            <TextView
+                android:id="@+id/tvProgress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+
+                android:text="abcs"
+                android:textAlignment="center" />
+
+            <android.support.v4.widget.ContentLoadingProgressBar
+                android:id="@+id/profileProgressBar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="250dp"
+                android:layout_gravity="center"
+                android:layout_height="40dp"
+                android:layout_marginTop="-10dp" />
+
+            <TextView
+                android:id="@+id/tvProgressLevel"
+                android:layout_width="match_parent"
+                android:layout_height="101dp"
+                android:layout_marginTop="0dp"
+                android:text="abcs"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+    </ScrollView>
 
 
 

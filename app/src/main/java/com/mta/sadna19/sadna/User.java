@@ -50,15 +50,6 @@ public class User implements Parcelable {
     }
 
     private int m_points;
-
-    public boolean getPrivacyPolicy() {
-        return m_PrivacyPolicy;
-    }
-
-    public void setPrivacyPolicy(boolean m_PrivacyPolicy) {
-        this.m_PrivacyPolicy = m_PrivacyPolicy;
-    }
-
     private boolean m_PrivacyPolicy;
 
     public void setM_email(String m_email) {
@@ -74,7 +65,6 @@ public class User implements Parcelable {
     }
     public User(){
         m_PrivacyPolicy = true;
-        m_points = 0;
     }
 
     @Override

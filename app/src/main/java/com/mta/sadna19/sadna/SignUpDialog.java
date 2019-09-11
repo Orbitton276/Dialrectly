@@ -182,12 +182,12 @@ public class SignUpDialog extends AppCompatDialogFragment {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             Log.d(TAG, "User profile updated.");
-                                            registerUser();
                                         }
                                     }
                                 });
                         displayMessage("successfully signed up");
 
+                        registerUser();
                         Intent intent = new Intent(getActivity(), MenuListActivity.class);
                         startActivity(intent);
 

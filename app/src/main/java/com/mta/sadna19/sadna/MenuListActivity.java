@@ -1,10 +1,14 @@
 package com.mta.sadna19.sadna;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -50,7 +54,7 @@ public class MenuListActivity extends AppCompatActivity implements NavigationVie
     ProfileFrag mProfileFrag;
     HomeFrag mHomeFrag;
     FavoritesFrag mFavoritesFrag;
-    static int PReqCode = 1;
+    static int PReqCode = 2;
     static int REQUESTCODE = 1;
     NavigationView navView;
 
@@ -62,8 +66,55 @@ public class MenuListActivity extends AppCompatActivity implements NavigationVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_list);
         mSavedInstanceState = savedInstanceState;
+
+        requestPer();
+
         init();
         Log.e(TAG, "onCreate() <<");
+    }
+
+
+    private void openPermissionDeniedDialog()
+    {
+        PhonePermissionDeniedDialog dialog = new PhonePermissionDeniedDialog();
+        dialog.SetOnPermittionGrantedAfterAll(new PhonePermissionDeniedDialog.OnPermissionGrantedAfterAll() {
+            @Override
+            public void onAskPermitionAgain() {
+                requestPer();
+            }
+        });
+        dialog.show(getSupportFragmentManager(),"");
+    }
+    private void requestPer()
+    {
+
+        if (ContextCompat.checkSelfPermission(MenuListActivity.this,
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MenuListActivity.this,
+                    new String[]{Manifest.permission.CALL_PHONE}, REQUESTCODE);
+            Log.e(TAG,"onRequestPer granted");
+        } else {
+            //make call
+            Log.e(TAG,"onRequestPer denied");
+
+        }
+    }
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUESTCODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.e(TAG,"onpermissionResult granted");
+            } else {
+                //do something else
+
+                openPermissionDeniedDialog();
+                Log.e(TAG,"onpermissionResult denied");
+
+            }
+        }
     }
 
     @Override

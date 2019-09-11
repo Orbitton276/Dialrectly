@@ -179,7 +179,7 @@ public class OptionsListActivity extends AppCompatActivity {
         if (mServerHandler.IsUserLogedIn()) {
 
             currentUser = new User();
-            currentUser.setPrivacyPolicy(false);
+            currentUser.setM_PrivacyPolicy(false);
             if (fbUser != null) {
                 mServerHandler.SetOnFavoritesServicesFetchedListener(new ServerHandler.onFavoritesServicesFetchedListener() {
                     @Override
@@ -203,8 +203,8 @@ public class OptionsListActivity extends AppCompatActivity {
             m_OptionAdapter.setOnOptionViewCreatedListener(new OptionAdapter.OnOptionViewCreatedListener() {
                 @Override
                 public void OnOptionViewCreated(OptionAdapter.OptionViewHolder iViewHolder) {
-                    if (mServerHandler.getmUser().getPrivacyPolicy()) {
-                        Log.e(TAG, "PP iss: " + currentUser.getPrivacyPolicy());
+                    if (mServerHandler.getmUser().isM_PrivacyPolicy()) {
+                        Log.e(TAG, "PP iss: " + currentUser.isM_PrivacyPolicy());
                         switch (iViewHolder.getOption().getType()) {
 
                             case "DataOption":
@@ -267,28 +267,12 @@ public class OptionsListActivity extends AppCompatActivity {
         Log.e(TAG, "Size after back: " + m_logic.getArraySize());
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                makeCall(m_phoneToDial);
-            } else {
-                //permission denied
-            }
-        }
-    }
 
     private void makeCall(String i_number) {
-        if (ContextCompat.checkSelfPermission(OptionsListActivity.this,
-                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(OptionsListActivity.this,
-                    new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CODE);
-            makeCall(i_number);
-        } else {
+
             //make call
             String phoneToDial = "tel:" + i_number;
             startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(phoneToDial)));
-        }
     }
 
     private void openReportProblemDialog() {

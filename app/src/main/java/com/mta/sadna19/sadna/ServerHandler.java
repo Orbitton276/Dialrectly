@@ -225,11 +225,11 @@ public class ServerHandler {
     public void writeUser(final User user) {
         Log.e(TAG, user.toString());
         fbUsr = FirebaseAuth.getInstance().getCurrentUser();
+        Log.e(TAG,"id is: "+fbUsr.getUid());
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbUsr.getUid()+"/UserObject");
         if (user!=null)
             userRef.setValue(user);
-        userRef = FirebaseDatabase.getInstance().getReference("Users/"+fbUsr.getUid()+"/PrivacyPolicy");
-        userRef.setValue("true");
+        //userRef.child("PrivacyPolicy").setValue("true");
 
 
     }
@@ -260,16 +260,15 @@ public class ServerHandler {
 
             }
         });
-        userRef.child("PrivacyPolicy").addValueEventListener(new ValueEventListener() {
+        userRef = FirebaseDatabase.getInstance().getReference("Users/"+i_userID+"/UserObject");
+        userRef.child("m_PrivacyPolicy").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String val = dataSnapshot.getValue(String.class);
-                Log.e(TAG,"inPP: "+val);
-                if (val.equals("true")) {
-                    mUser.SetPrivacyPolicy(true);
-                } else {
-                    mUser.SetPrivacyPolicy(false);
-                }
+                Boolean res = (Boolean) dataSnapshot.getValue();
+
+                Log.e(TAG,"res "+res);
+                mUser.SetPrivacyPolicy(res);
+
             }
 
             @Override
@@ -387,21 +386,21 @@ public class ServerHandler {
 
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbUsr.getUid());
         userRef.child("User Data").setValue(null);
-        userRef.child("PrivacyPolicy").setValue("false");
+        userRef.child("UserObject").child("m_PrivacyPolicy").setValue(false);
 
     }
     public void onPrivacyPolicySwitchedOn(){
         fbUsr= FirebaseAuth.getInstance().getCurrentUser();
 
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbUsr.getUid());
-        userRef.child("PrivacyPolicy").setValue("true");
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbUsr.getUid()+"/UserObject");
+        userRef.child("m_PrivacyPolicy").setValue(true);
     }
 
     public void fetchUserPrivacyPolicy()
     {
         fbUsr = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbUsr.getUid());
-        userRef.child("PrivacyPolicy").addValueEventListener(new ValueEventListener() {
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbUsr.getUid()+"/UserObject");
+        userRef.child("m_PrivacyPolicy").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String privacyPolicy = dataSnapshot.getValue(String.class);

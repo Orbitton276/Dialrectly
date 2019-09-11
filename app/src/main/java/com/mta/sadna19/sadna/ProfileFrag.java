@@ -59,13 +59,13 @@ public class ProfileFrag extends Fragment {
     EditText email;
     Button editBtn;
     User user;
-    ImageView userProfilePic, rotateButton;
+    ImageView userProfilePic;
     FirebaseUser fbUser;
     Uri pickedImgUri;
     SwitchCompat switchButton;
     ServerHandler serverHandler;
     Boolean bool;
-    TextView tvProgress,tvProgressLevel;
+    TextView tvProgress, tvProgressLevel;
     ProgressBar progressBar;
     private static final String TAG = "onProfileFrag";
     private onProfileImageUpdate mOnProfileImageUpdate;
@@ -83,7 +83,7 @@ public class ProfileFrag extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragView = inflater.inflate(R.layout.profile_frag, null);
-        rotateButton = fragView.findViewById(R.id.btnRotate);
+        //rotateButton = fragView.findViewById(R.id.btnRotate);
         switchButton = fragView.findViewById(R.id.btnSwitchPrivacy);
         name = fragView.findViewById(R.id.frName);
         progressBar = fragView.findViewById(R.id.profileProgressBar);
@@ -100,12 +100,7 @@ public class ProfileFrag extends Fragment {
                 }
             }
         });
-        rotateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onRotateProfilePic();
-            }
-        });
+
 
 
         return fragView;
@@ -145,15 +140,14 @@ public class ProfileFrag extends Fragment {
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (name.isEnabled()){
+                if (name.isEnabled()) {
 
                     name.setEnabled(false);
                     editBtn.setText("עריכה");
 
                     user.setM_name(name.getText().toString());
                     serverHandler.writeUser(user);
-                }
-                else{
+                } else {
                     name.setEnabled(true);
                     editBtn.setText("סיים עריכה");
 
@@ -169,7 +163,7 @@ public class ProfileFrag extends Fragment {
             @Override
             public void OnUserFetch(User i_user) {
                 user = i_user;
-                Log.e(TAG,"User is: "+i_user.toString());
+                Log.e(TAG, "User is: " + i_user.toString());
                 updateUserUI();
 
             }
@@ -185,7 +179,7 @@ public class ProfileFrag extends Fragment {
                 serverHandler.removePrivacyListener();
             }
         });
-        serverHandler.fetchUserPrivacyPolicy();
+        //serverHandler.fetchUserPrivacyPolicy();
 
 
     }
@@ -196,8 +190,10 @@ public class ProfileFrag extends Fragment {
     }
 
 
-    private void updateUserUI(){
+    private void updateUserUI() {
         if (user != null) {
+            if (user.isM_PrivacyPolicy())
+                switchButton.setChecked(true);
             name.setText(user.getM_name());
             setProgressBar(user.getM_points());
             email.setText(user.getM_email());
@@ -210,9 +206,11 @@ public class ProfileFrag extends Fragment {
         //super.onActivityResult(requestCode, resultCode, data);
         // the user has successfully picked an image
         // we need to save its reference to a Uri variable
-        pickedImgUri = data.getData();
-
-        Picasso.get().load(pickedImgUri).transform(new CircleTransform()).fit().into(userProfilePic);
+        if (data != null)
+        {
+            pickedImgUri = data.getData();
+            Picasso.get().load(pickedImgUri).transform(new CircleTransform()).fit().into(userProfilePic);
+        }
         if (mOnProfileImageUpdate != null)
             mOnProfileImageUpdate.onProfileImageUpdate(pickedImgUri);
         updateUserInfo();
@@ -307,53 +305,44 @@ public class ProfileFrag extends Fragment {
 
     }
 
-    public void onRotateProfilePic() {
-        userProfilePic.setRotation(userProfilePic.getRotation() + 90);
 
-    }
-
-    private void setProgressBar(int i_currentPoints)
-    {
-        int startLevel=0;
-        int endLevel=0;
-        int progressToSet=0;
+    private void setProgressBar(int i_currentPoints) {
+        int startLevel = 0;
+        int endLevel = 0;
+        int progressToSet = 0;
         double db;
-        if (i_currentPoints>=0&&i_currentPoints<=200)
-        {
+        if (i_currentPoints >= 0 && i_currentPoints <= 200) {
             //level 1
             tvProgressLevel.setText("טירון");
             progressBar.setProgressTintList(ColorStateList.valueOf(Color.RED));
-            startLevel=0;
+            startLevel = 0;
             endLevel = 200;
-        }
-        else if(i_currentPoints>200&&i_currentPoints<=300){
+        } else if (i_currentPoints > 200 && i_currentPoints <= 300) {
             //level 2
             tvProgressLevel.setText("ותיק בתחום");
 
             progressBar.setProgressTintList(ColorStateList.valueOf(Color.GREEN));
 
-            startLevel=200;
+            startLevel = 200;
             endLevel = 300;
-        }
-        else{
+        } else {
             //level 3
             progressBar.setProgressTintList(ColorStateList.valueOf(Color.BLUE));
             tvProgressLevel.setText("סבא ג'פטו");
 
-            startLevel=300;
+            startLevel = 300;
             endLevel = 500;
-            if (i_currentPoints>endLevel)
-            {
-                endLevel = startLevel+1;
+            if (i_currentPoints > endLevel) {
+                endLevel = startLevel + 1;
             }
         }
-        db = ((double)i_currentPoints-startLevel)/(endLevel-startLevel);
-        db = db*100;
-        progressToSet = (int)db;
+        db = ((double) i_currentPoints - startLevel) / (endLevel - startLevel);
+        db = db * 100;
+        progressToSet = (int) db;
 
-        tvProgress.setText(i_currentPoints+"/"+endLevel);
+        tvProgress.setText(i_currentPoints + "/" + endLevel);
 
-        Log.e(TAG,"prog is: "+progressToSet+"start "+startLevel+"end "+endLevel+" db "+db);
+        Log.e(TAG, "prog is: " + progressToSet + "start " + startLevel + "end " + endLevel + " db " + db);
         progressBar.setProgress(progressToSet);
     }
 
