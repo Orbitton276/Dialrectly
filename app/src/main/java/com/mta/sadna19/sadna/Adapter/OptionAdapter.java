@@ -16,7 +16,6 @@ import com.mta.sadna19.sadna.MenuRegisters.Option;
 import com.mta.sadna19.sadna.R;
 
 public class OptionAdapter extends BaseAdapter {
-    public static final String TAG = "$OptionAdapter$";
     Context context;
     Option m_Option;
     LayoutInflater inflter;
@@ -81,7 +80,6 @@ public class OptionAdapter extends BaseAdapter {
             return m_View;
         }
         public DataOptionViewHolder(DataOption i_optionToSet){
-            Log.e(TAG,"in dataOptionViewHolder"+i_optionToSet.toString());
             m_View = inflter.inflate(R.layout.dataoption_list_item, null);
             m_DataInput = m_View.findViewById(R.id.dataOptioneEditText);
             m_DataInput.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -102,18 +100,14 @@ public class OptionAdapter extends BaseAdapter {
     }
 
     public OptionAdapter(Context applicationContext, Option i_Option) {
-        Log.e(TAG, "OptionAdapter()>>");
         this.context = context;
         this.m_Option = i_Option;
         inflter = (LayoutInflater.from(applicationContext));
-        Log.e(TAG, "OptionAdapter()<<");
     }
 
     public void updateAdapter(Option i_Option) {
-        Log.e(TAG, "updateAdapter()>>");
         this.m_Option = i_Option;
         notifyDataSetChanged();
-        Log.e(TAG, "updateAdapter()<< " + i_Option.getName());
     }
 
     @Override
@@ -133,7 +127,6 @@ public class OptionAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        Log.e(TAG, "getView()>>");
         Option newOption = (Option) m_Option.getSubMenu().toArray()[i];
         OptionViewHolder viewHolder;
         switch (newOption.getType()){
@@ -148,8 +141,6 @@ public class OptionAdapter extends BaseAdapter {
         if (m_OptionViewCreated!=null){
             m_OptionViewCreated.OnOptionViewCreated(viewHolder);
         }
-        Log.e(TAG, String.format("%s was created as %s", newOption.getName(),newOption.getType()));
-        Log.e(TAG, "getView()<<");
         return view;
     }
 

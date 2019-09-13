@@ -61,7 +61,6 @@ public class FavoritesFrag extends Fragment {
 
     private static final int REQUEST_CODE = 1;
 
-    private static final String TAG = "onFavoritesFrag";
 
     OnDialLastCallClicked mOnDialLastCallClicked;
 
@@ -133,7 +132,6 @@ public class FavoritesFrag extends Fragment {
             @Override
             public void OnLastCallFetched(String i_userLastCall, String i_userLastCallDial) {
                 LastCall = i_userLastCall;
-                Log.e(TAG, "LastCALL: " + LastCall);
                 tvLastCall.setText(LastCall);
                 LastCallDial = i_userLastCallDial;
 
@@ -142,23 +140,11 @@ public class FavoritesFrag extends Fragment {
         mServerHandler.SetOnFavoritesServicesFetchedListener(new ServerHandler.onFavoritesServicesFetchedListener() {
             @Override
             public void OnFavoritesServicesFetched(Map<String, ServiceItem> i_favoritesServicesMap) {
-                Log.e(TAG, "onFavoritesFetched");
-                //mRecyclerView.setVisibility(View.VISIBLE);
                 if (i_favoritesServicesMap != null)
                     initData(i_favoritesServicesMap);
-                //initLastCall();
             }
         });
-        /*mServerHandler.SetOnOptionFetchedListener(new ServerHandler.OnOptionFetchedListener() {
-            @Override
-            public void OnMenuFetch(Option i_opt, ServiceItem i_service) {
-                Intent intent = new Intent(mContext, OptionsListActivity.class);
 
-                intent.putExtra(OPTION_SELECTED, i_opt);
-                intent.putExtra("service", i_service);
-                startActivity(intent);
-            }
-        });*/
         getData();
         mServerHandler.fetchUserLastCall();
 
@@ -170,13 +156,11 @@ public class FavoritesFrag extends Fragment {
     }
 
     private void initData(Map<String, ServiceItem> i_favoritesServices) {
-        Log.e(TAG, i_favoritesServices.toString());
         mFavoritesArray.clear();
         for (int i = 1; i < 6; i++) {
             if (i_favoritesServices.containsKey(String.valueOf(i))) {
                 ServiceItem item = i_favoritesServices.get(String.valueOf(i));
                 mFavoritesArray.add(item);
-                Log.e(TAG, item.toString());
 
             } else {
                 break;

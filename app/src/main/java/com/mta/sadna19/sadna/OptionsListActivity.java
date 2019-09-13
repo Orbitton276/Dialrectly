@@ -34,8 +34,6 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class OptionsListActivity extends AppCompatActivity {
-    public static final String TAG = "$OptionsListActivity$";
-    Button btn;
 
     ListView m_OptionList;
     Map<String, ServiceItem> m_userFavoritesMap;
@@ -51,23 +49,18 @@ public class OptionsListActivity extends AppCompatActivity {
     private FirebaseUser fbUser;
     String LastCallpathName = "";
     String LastCallClickedItem = "";
-    MenuProblem menuProblem;
     User currentUser;
     boolean disableBackButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.e(TAG, "onCreate() >>");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_options_list);
         init();
-        Log.e(TAG, "onCreate() <<");
     }
 
     public Option testFactory() {
-        Log.e(TAG, "testFactory() >>");
         Factory factory = new Factory();
-        Log.e(TAG, "testFactory() <<");
         return factory.CreateOption("1800201229", "בזק")
                 .AddSubMenu(
                         factory.CreateOption("1", "לקוח קיים").AddSubMenu(
@@ -128,8 +121,6 @@ public class OptionsListActivity extends AppCompatActivity {
 
                 }
 
-                Log.e(TAG, "path: " + LastCallpathName);
-                Log.e(TAG, "path: " + LastCallClickedItem);
                 m_logic.SelectedOption(i_op);
             }
         });
@@ -158,7 +149,6 @@ public class OptionsListActivity extends AppCompatActivity {
             @Override
             public void onLastOption() {
                 String allPressedKeys = m_logic.GetAllKeysString();
-                Log.e(TAG, String.format("calling %s", allPressedKeys));
                 //Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + allPressedKeys));
                 m_phoneToDial = allPressedKeys;
                 //======================================================================
@@ -204,7 +194,6 @@ public class OptionsListActivity extends AppCompatActivity {
                 @Override
                 public void OnOptionViewCreated(OptionAdapter.OptionViewHolder iViewHolder) {
                     if (mServerHandler.getmUser().isM_PrivacyPolicy()) {
-                        Log.e(TAG, "PP iss: " + currentUser.isM_PrivacyPolicy());
                         switch (iViewHolder.getOption().getType()) {
 
                             case "DataOption":
@@ -258,13 +247,11 @@ public class OptionsListActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Log.e(TAG, "Size before back: " + m_logic.getArraySize());
         if (!m_logic.isBackToServices()&&!disableBackButton)
             m_logic.Back();
         else {
             super.onBackPressed();
         }
-        Log.e(TAG, "Size after back: " + m_logic.getArraySize());
     }
 
 

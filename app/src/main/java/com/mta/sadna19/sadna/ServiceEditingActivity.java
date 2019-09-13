@@ -15,26 +15,20 @@ import com.unnamed.b.atv.model.TreeNode;
 import com.unnamed.b.atv.view.AndroidTreeView;
 
 public class ServiceEditingActivity extends AppCompatActivity {
-    static final String TAG = "$SEditingActivity$";
     ViewGroup mContainerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.e(TAG, "onCreate() >>");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service_editing);
         init();
         buildTree();
-        Log.e(TAG, "onCreate() <<");
     }
 
     private void init() {
-        Log.e(TAG, "init() >>");
         mContainerView = findViewById(R.id.mainLayout);
-        Log.e(TAG, "init() <<");
     }
 
     private void buildTree() {
-        Log.e(TAG, "buildTree() >>");
         MyHolder mh = new MyHolder(this);
         TreeNode root = TreeNode.root();
         TreeNode parent = new TreeNode(new Option("1","a")).setViewHolder(mh);
@@ -47,24 +41,19 @@ public class ServiceEditingActivity extends AppCompatActivity {
         //tView.setDefaultViewHolder(MyHolder.class);
         tView.setDefaultContainerStyle(R.style.TreeNodeStyle);
         mContainerView.addView(tView.getView());
-        Log.e(TAG, "buildTree() >>");
     }
 
     public class MyHolder extends TreeNode.BaseNodeViewHolder<Option> {
         public MyHolder(Context context) {
             super(context);
-            Log.e(TAG, "MyHolder() >>");
-            Log.e(TAG, "MyHolder() <<");
         }
 
         @Override
         public View createNodeView(TreeNode node, Option value) {
-            Log.e(TAG, "createNodeView() >>");
             final LayoutInflater inflater = LayoutInflater.from(context);
             final View view = inflater.inflate(R.layout.option_list_item, null, false);
             Button tvValue = (Button) view.findViewById(R.id.optionButton);
             tvValue.setText(value.getName());
-            Log.e(TAG, "createNodeView() << " + value.getName());
             return view;
         }
     }

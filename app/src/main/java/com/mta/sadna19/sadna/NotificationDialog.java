@@ -16,7 +16,7 @@ public class NotificationDialog extends AppCompatDialogFragment {
     OnPrivacyPolicyClicked mOnPrivacyPolicyClicked;
 
     public interface OnPrivacyPolicyClicked{
-        public void OnApprovedPrivacyChanges();
+         void OnApprovedPrivacyChanges();
     }
 
     public void SetOnPrivacyPolicyClicked(OnPrivacyPolicyClicked onPrivacyPolicyClicked)

@@ -25,7 +25,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 public class corridorActivity extends AppCompatActivity {
-    public static final String TAG = "onCorridorActivity";
     public static final int RC_GOOGLE_SIGN_IN = 1001;
     private SignInButton mGoogleSignInBtn;
     private FirebaseAuth mAuth;
@@ -33,7 +32,6 @@ public class corridorActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
     private GoogleSignInOptions gso;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    //private AccessTokenTracker accessTokenTracker;
     private TextView textView,mEmail,mPass;
     private Button toSignIn,toSignUp,toServices;
     @Override
@@ -64,9 +62,7 @@ public class corridorActivity extends AppCompatActivity {
             }
         });
 
-        //initSignInActivity();
         firebaseInit();
-        //googleSignInInit();
     }
 
     private void openSignInDialog()
@@ -76,7 +72,6 @@ public class corridorActivity extends AppCompatActivity {
     }
     private void openSignUpDialog()
     {
-        Log.e(TAG,"onSignUpDialogFunc");
 
         SignUpDialog dialog = new SignUpDialog();
         dialog.show(getSupportFragmentManager(),"");
@@ -91,91 +86,10 @@ public class corridorActivity extends AppCompatActivity {
         mPass = findViewById(R.id.tvSigninPassword);
     }
 
-   /* public void onEmailPasswordAuthClick(View V) {
 
-        Log.e(TAG, "onEmailPasswordSignUpClick() >>");
-
-        String email = mEmail.getText().toString();
-        String pass = mPass.getText().toString();
-
-        if (email.isEmpty()||pass.isEmpty()){
-            //displayMessage("Please fill in both Email and Password fields");
-            return;
-        }
-
-        Task<AuthResult> authResult;
-
-        authResult = mAuth.signInWithEmailAndPassword(email, pass);
-        authResult.addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                Log.e(TAG, "Email/Pass Auth: onComplete() >> " + task.isSuccessful());
-                if (task.isSuccessful()){
-                    //displayMessage("successfully signed in");
-
-
-                    Intent intent;
-                    intent = new Intent(corridorActivity.this, MenuListActivity.class);
-                    startActivity(intent);
-                    finish();
-
-
-                }
-
-                Log.e(TAG, "Email/Pass Auth: onComplete() <<");
-            }
-        });
-
-        Log.e(TAG, "onEmailPasswordSignUpClick() <<");
-    }*/
-
-   /* private void googleSignInInit() {
-
-        Log.e(TAG, "googleSigninInit() >>" );
-
-        // Configure Google Sign In
-        gso = new GoogleSignInOptions
-                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestProfile()
-                .requestEmail()
-                .build();
-
-        // Build a GoogleSignInClient with the options specified by gso.
-
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        findViewById(R.id.google_sign_in_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onGoogleSignIn();
-            }
-        });
-        googleButtonInit();
-        Log.e(TAG, "googleSigninInit() <<" );
-    }*/
-
-    /*private void googleButtonInit(){
-        textView = (TextView) mGoogleSignInBtn.getChildAt(0);
-        textView.setText(getResources().getString(R.string.googleButtonText));
-        textView.setTextSize(20);
-        textView.setPadding(40,0,0,0);
-    }
-
-    /*private void onGoogleSignIn() {
-
-        Log.e(TAG, "onGoogleSignIn() >>" );
-
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
-
-        Log.e(TAG, "onGoogleSignIn() <<" );
-    }*/
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
 
-        Log.e(TAG, "firebaseAuthWithGoogle() >>");
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -191,39 +105,13 @@ public class corridorActivity extends AppCompatActivity {
                     }
                 });
 
-        Log.e(TAG, "firebaseAuthWithGoogle() <<");
 
     }
 
-    //@Override
-   /* public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-
-        Log.e(TAG, "onActivityResult () >>");
-
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_GOOGLE_SIGN_IN) {
-            //Google Login...
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                firebaseAuthWithGoogle(account);
-                Log.e(TAG, "try google sign in success () >>");
-            } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
-                Log.e(TAG, "Google sign in failed", e);
-            }
-        }
-        Log.e(TAG, "onActivityResult () <<");
-    }*/
 
     @Override
     protected void onStart() {
 
-        Log.e(TAG, "onStart() >>");
         String name;
         super.onStart();
 
@@ -231,8 +119,6 @@ public class corridorActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user!=null){
 
-            Log.e(TAG,"user already signed up"+user.getUid());
-            Log.e(TAG,"user already signed up"+user.getEmail());
 
             Intent intent = new Intent(corridorActivity.this,MenuListActivity.class);
             intent.putExtra("user",user);
@@ -240,40 +126,32 @@ public class corridorActivity extends AppCompatActivity {
             finish();
         }
 
-        Log.e(TAG, "onStart() <<");
 
     }
 
     @Override
     protected void onStop() {
 
-        Log.e(TAG, "onStop() >>");
 
         super.onStop();
 
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
-        Log.e(TAG, "onStop() <<");
 
     }
 
 
     private void firebaseInit() {
-        Log.e(TAG, "firebaseAuthenticationInit() >>");
-        //Obtain reference to the current authentication
         mAuth = FirebaseAuth.getInstance();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                Log.e(TAG, "onAuthStateChanged() >>");
 
-                Log.e(TAG, "onAuthStateChanged() <<");
             }
         };
 
-        Log.e(TAG, "firebaseAuthenticationInit() <<");
     }
 
 

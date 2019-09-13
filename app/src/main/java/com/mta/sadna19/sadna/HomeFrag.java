@@ -1,13 +1,10 @@
 package com.mta.sadna19.sadna;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,21 +18,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.content.Context;
-import android.view.Window;
-import android.widget.Spinner;
 
 import com.mta.sadna19.sadna.Adapter.CategoryRecyclerAdapter;
 import com.mta.sadna19.sadna.Adapter.MenuAdapter;
-import com.mta.sadna19.sadna.Adapter.SpinnerListener;
 import com.mta.sadna19.sadna.MenuRegisters.Option;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static android.support.v4.app.DialogFragment.STYLE_NO_FRAME;
 
 public class HomeFrag extends Fragment  {
 
@@ -43,7 +34,6 @@ public class HomeFrag extends Fragment  {
     MenuAdapter nMenuAdapter;
     private ProgressDialog mLoadingScreen;
     private static final String OPTION_SELECTED = "OPTION_SELECTED";
-    public static final String TAG = "HomeFrag";
     RecyclerView mRecyclerView;
     RecyclerView mCategoriesRecycler;
     ServerHandler mServerHandler;
@@ -74,7 +64,6 @@ public class HomeFrag extends Fragment  {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.e(TAG,"onCreateView >>");
         View fragView = inflater.inflate(R.layout.home_frag,null);
         mContext = getActivity().getApplicationContext();
 
@@ -112,16 +101,7 @@ public class HomeFrag extends Fragment  {
         mServerHandler.SetOnServicesFetchedListener(new ServerHandler.OnServicesFetchedListener() {
             @Override
             public void OnServicesFetched(Map<String,ArrayList<ServiceItem>> i_servicesData) {
-                /*new AsyncTask() {
 
-                    @Override
-                    protected void onPreExecute() {
-                    }
-                    @Override
-                    protected Object doInBackground(Object[] objects) {
-                        return null;
-                    }
-                };*/
                 mRecyclerView.setVisibility(View.VISIBLE);
                 updateDataMap(i_servicesData);
                 initData("הכל");
@@ -145,8 +125,6 @@ public class HomeFrag extends Fragment  {
 
     private void initData(String i_categoryToDisplay) {
         mMenuList.clear();
-        Log.e(TAG,"category is : "+i_categoryToDisplay);
-        Log.e(TAG,"data is : "+dataMap.get(i_categoryToDisplay).toString());
 
         for (ServiceItem si : dataMap.get(i_categoryToDisplay)) {
             mMenuList.add(si);
@@ -175,7 +153,6 @@ public class HomeFrag extends Fragment  {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                Log.e(TAG,"s = "+s);
                 nMenuAdapter.getFilter().filter(s);
                 return false;
             }
@@ -199,12 +176,10 @@ public class HomeFrag extends Fragment  {
 
     private void initList()
     {
-        Log.e(TAG,"dataMap: "+dataMap.toString());
 
         if (dataMap!=null)
         {
             for (Map.Entry<String, ArrayList<ServiceItem>> entry : dataMap.entrySet()) {
-                Log.e(TAG,"cat is: "+entry.getKey());
                 categoryList.add(new SpinnerItem(entry.getKey(),R.drawable.ic_dot));
             }
         }
@@ -217,7 +192,6 @@ public class HomeFrag extends Fragment  {
         if (dataMap!=null)
         {
             for (Map.Entry<String, ArrayList<ServiceItem>> entry : dataMap.entrySet()) {
-                Log.e(TAG,"cat is: "+entry.getKey());
                 mCategoriesList.add(entry.getKey());
             }
         }

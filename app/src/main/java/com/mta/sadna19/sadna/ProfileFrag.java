@@ -54,8 +54,6 @@ public class ProfileFrag extends Fragment {
 
 
     EditText name;
-    //EditText id;
-    //EditText phone;
     EditText email;
     Button editBtn;
     User user;
@@ -67,7 +65,6 @@ public class ProfileFrag extends Fragment {
     Boolean bool;
     TextView tvProgress, tvProgressLevel;
     ProgressBar progressBar;
-    private static final String TAG = "onProfileFrag";
     private onProfileImageUpdate mOnProfileImageUpdate;
 
     public interface onProfileImageUpdate {
@@ -116,7 +113,6 @@ public class ProfileFrag extends Fragment {
 
 
         fbUser = FirebaseAuth.getInstance().getCurrentUser();
-        Log.e(TAG, "userUrl: " + fbUser.getPhotoUrl());
         if (fbUser.getPhotoUrl() != null) {
             Picasso.get().load(fbUser.getPhotoUrl()).transform(new CircleTransform()).into(userProfilePic);
         } else {
@@ -125,12 +121,9 @@ public class ProfileFrag extends Fragment {
         userProfilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e(TAG, "onImageClicked >>");
                 if (Build.VERSION.SDK_INT >= 22) {
-                    Log.e(TAG, "onRequestPermission>>");
                     checkAndRequestForPermission();
                 } else {
-                    Log.e(TAG, "onOpenGallery>>");
                     openGallery();
                 }
 
@@ -163,7 +156,6 @@ public class ProfileFrag extends Fragment {
             @Override
             public void OnUserFetch(User i_user) {
                 user = i_user;
-                Log.e(TAG, "User is: " + i_user.toString());
                 updateUserUI();
 
             }
@@ -173,7 +165,6 @@ public class ProfileFrag extends Fragment {
             @Override
             public void OnPrivacyPolicyFetched(boolean i_privacyPolicy) {
                 bool = i_privacyPolicy;
-                Log.e(TAG, "pv: " + bool);
                 if (i_privacyPolicy)
                     switchButton.setChecked(true);
                 serverHandler.removePrivacyListener();
@@ -203,9 +194,7 @@ public class ProfileFrag extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //super.onActivityResult(requestCode, resultCode, data);
-        // the user has successfully picked an image
-        // we need to save its reference to a Uri variable
+
         if (data != null)
         {
             pickedImgUri = data.getData();
@@ -216,7 +205,6 @@ public class ProfileFrag extends Fragment {
         updateUserInfo();
 
 
-        Log.e(TAG, "onActivityResult in frag");
     }
 
     private void openGallery() {
@@ -234,7 +222,6 @@ public class ProfileFrag extends Fragment {
                 != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
-                //Toast.makeText(MenuListActivity.this,"Please accept for required permission",Toast.LENGTH_SHORT).show();
             } else {
                 ActivityCompat.requestPermissions(getActivity(),
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
@@ -250,7 +237,6 @@ public class ProfileFrag extends Fragment {
 
     private void updateUserInfo() {
 
-        // first we need to upload user photo to firebase storage and get url
 
         StorageReference mStorage = FirebaseStorage.getInstance().getReference().child("users_photos");
 
@@ -258,7 +244,6 @@ public class ProfileFrag extends Fragment {
         imageFilePath.putFile(pickedImgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // image uploaded succesfully
                 // now we can get our image url
                 imageFilePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
@@ -342,7 +327,6 @@ public class ProfileFrag extends Fragment {
 
         tvProgress.setText(i_currentPoints + "/" + endLevel);
 
-        Log.e(TAG, "prog is: " + progressToSet + "start " + startLevel + "end " + endLevel + " db " + db);
         progressBar.setProgress(progressToSet);
     }
 

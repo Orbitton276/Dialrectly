@@ -11,7 +11,7 @@ public class PhonePermissionDeniedDialog extends AppCompatDialogFragment {
 
     OnPermissionGrantedAfterAll monPermittionGrantedAfterAll;
     public interface OnPermissionGrantedAfterAll {
-        public void onAskPermitionAgain();
+         void onAskPermitionAgain();
     }
     public void SetOnPermittionGrantedAfterAll(OnPermissionGrantedAfterAll i_OnPermissionGrantedAfterAll)
     {

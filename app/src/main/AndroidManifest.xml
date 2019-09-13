@@ -28,7 +28,6 @@
         <activity
             android:name=".MenuListActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

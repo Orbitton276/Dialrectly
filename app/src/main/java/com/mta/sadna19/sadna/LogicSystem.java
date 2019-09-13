@@ -8,7 +8,6 @@ import com.mta.sadna19.sadna.MenuRegisters.Option;
 import java.util.LinkedList;
 
 public class LogicSystem {
-    public static final String TAG = "$LogicSystem$";
     private LinkedList<Option> m_selectedOptionsArr = new LinkedList<>();
     private BackListener m_onBackSelectedListener;
     private SelectedListener m_onOptionSelectedListener;
@@ -40,10 +39,8 @@ public class LogicSystem {
         String allPressedKeys = "";
         for (Option op : m_selectedOptionsArr) {
             allPressedKeys = allPressedKeys + op.pressKeys();
-            Log.e(TAG, String.format("%s, ", op.pressKeys()));
 
         }
-        Log.e(TAG, String.format("GetAllKeysString => %s", allPressedKeys));
         return allPressedKeys;
     }
 

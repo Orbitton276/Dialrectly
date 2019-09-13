@@ -37,12 +37,8 @@ import java.util.List;
 import static java.time.OffsetDateTime.now;
 
 public class MenuListActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    static final String TAG = "$MenuListActivity$";
     private static final String OPTION_SELECTED = "OPTION_SELECTED";
-    RecyclerView mRecyclerView;
-    List<ServiceItem> mMenuList;
     ServerHandler mServerHandler;
-    MenuAdapter nMenuAdapter;
     GoogleApiClient mGoogleApiClient;
     FirebaseAuth mAuth;
     User signedUpUser;
@@ -62,7 +58,6 @@ public class MenuListActivity extends AppCompatActivity implements NavigationVie
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.e(TAG, "onCreate() >>");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_list);
         mSavedInstanceState = savedInstanceState;
@@ -70,7 +65,6 @@ public class MenuListActivity extends AppCompatActivity implements NavigationVie
         requestPer();
 
         init();
-        Log.e(TAG, "onCreate() <<");
     }
 
 
@@ -92,11 +86,6 @@ public class MenuListActivity extends AppCompatActivity implements NavigationVie
                 Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MenuListActivity.this,
                     new String[]{Manifest.permission.CALL_PHONE}, REQUESTCODE);
-            Log.e(TAG,"onRequestPer granted");
-        } else {
-            //make call
-            Log.e(TAG,"onRequestPer denied");
-
         }
     }
 
@@ -106,12 +95,8 @@ public class MenuListActivity extends AppCompatActivity implements NavigationVie
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUESTCODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Log.e(TAG,"onpermissionResult granted");
             } else {
-                //do something else
-
                 openPermissionDeniedDialog();
-                Log.e(TAG,"onpermissionResult denied");
 
             }
         }
@@ -119,7 +104,6 @@ public class MenuListActivity extends AppCompatActivity implements NavigationVie
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        Log.e(TAG, "onNavigationItemSelected");
         switch (menuItem.getItemId()) {
             case R.id.nav_profile: {
                 mProfileFrag.SetOnImageUpdateClickListener(new ProfileFrag.onProfileImageUpdate() {
@@ -174,7 +158,6 @@ public class MenuListActivity extends AppCompatActivity implements NavigationVie
 
 
     private void init() {
-        Log.e(TAG, "init() >>");
         mServerHandler = new ServerHandler();
         mHomeFrag = new HomeFrag();
         mFavoritesFrag = new FavoritesFrag();
@@ -247,9 +230,7 @@ public class MenuListActivity extends AppCompatActivity implements NavigationVie
     private void headerMessageByTime()
     {
         String timeStamp = new SimpleDateFormat("HH").format(Calendar.getInstance().getTime());
-        Log.e(TAG,"time is: "+timeStamp);
         int hour = Integer.parseInt(timeStamp);
-        Log.e(TAG,"time is: "+hour);
         if (hour>0&&hour<12)
         {
             tvHeaderEmailUser.setText("בוקר טוב");
@@ -293,16 +274,12 @@ public class MenuListActivity extends AppCompatActivity implements NavigationVie
                     {
                         if (i_user != null) {
                             //registered user
-                            Log.e(TAG, "משתמש רשום");
                             signedUpUser = i_user;
                         } else {
-                            Log.e(TAG, "משתמש נרשם");
                             //just singed up
                             if (signedUpUser != null) {
                                 mServerHandler.writeUser(signedUpUser);
                             } else {
-                                Log.e(TAG, "משתמש גוגל לא רשום");
-                                //google and not written in database
                                 signedUpUser = new User();
                                 signedUpUser.setM_email(fbUser.getEmail());
                                 mServerHandler.writeUser(signedUpUser);
@@ -364,9 +341,6 @@ public class MenuListActivity extends AppCompatActivity implements NavigationVie
 
         if (resultCode == RESULT_OK && requestCode == REQUESTCODE && data != null) {
 
-            // the user has successfully picked an image
-            // we need to save its reference to a Uri variable
-            Log.e(TAG, "onActivityResultMain");
 
             mProfileFrag.onActivityResult(requestCode, resultCode, data);
 

@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MenuAdapter extends RecyclerView.Adapter< MenuViewHolder > implements Filterable {
-    static final String TAG = "$MenuAdapter$";
     private Context mContext;
     private List<ServiceItem> mMenuList;
 
@@ -44,17 +43,13 @@ public class MenuAdapter extends RecyclerView.Adapter< MenuViewHolder > implemen
     }
 
     public MenuAdapter(Context iContext, List< ServiceItem > iMenuList) {
-        Log.e(TAG, "MenuAdapter() >>");
         this.mContext = iContext;
         this.mMenuList = iMenuList;
-        Log.e(TAG, "MenuAdapter() <<");
     }
 
     @Override
     public MenuViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.e(TAG, "onCreateViewHolder() >>");
         View mView = LayoutInflater.from(parent.getContext()).inflate(R.layout.menu_recyclerview_item, parent, false);
-        Log.e(TAG, "onCreateViewHolder() <<");
         return new MenuViewHolder(mView);
     }
 
@@ -65,18 +60,15 @@ public class MenuAdapter extends RecyclerView.Adapter< MenuViewHolder > implemen
 
     @Override
     public void onBindViewHolder(final MenuViewHolder holder, final int position) {
-        Log.e(TAG, "onBindViewHolder()" +mMenuList.get(position).getM_name()+" >>");
         Picasso.get().load(mMenuList.get(position).getM_avatar()).into(holder.mImage);
         holder.mTitle.setText(mMenuList.get(position).getM_name());
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e(TAG, String.format("%s was clicked!", mMenuList.get(position).getM_name()));
                 if (mOnMenuClickListener!= null)
                     mOnMenuClickListener.OnMenuClick(mMenuList.get(position));
             }
         });
-        Log.e(TAG, "onBindViewHolder() <<");
     }
 
     @Override
@@ -95,7 +87,6 @@ public class MenuAdapter extends RecyclerView.Adapter< MenuViewHolder > implemen
             List <ServiceItem> filteredItems = new ArrayList<>();
             if (constraint==null||constraint.length()==0)
             {
-                Log.e(TAG,"In empty filter >> "+mMenuListFull.toString());
                 filteredItems.addAll(mMenuListFull);
             }else{
                 String filterPattern = constraint.toString().toLowerCase().trim();
@@ -105,10 +96,7 @@ public class MenuAdapter extends RecyclerView.Adapter< MenuViewHolder > implemen
                     {
                         filteredItems.add(item);
                     }
-                    /*else if (item.getM_genre().toLowerCase().equals(filterPattern))
-                    {
-                        filteredItems.add(item);
-                    }*/
+
                 }
             }
             FilterResults results = new FilterResults();
@@ -126,17 +114,14 @@ public class MenuAdapter extends RecyclerView.Adapter< MenuViewHolder > implemen
 }
 
 class MenuViewHolder extends RecyclerView.ViewHolder {
-    static final String TAG = "$MenuViewHolder$";
     ImageView mImage;
     TextView mTitle;
     CardView mCardView;
 
     MenuViewHolder(View itemView) {
         super(itemView);
-        Log.e(TAG, "MenuViewHolder() >>");
         mImage = itemView.findViewById(R.id.ivImage);
         mTitle = itemView.findViewById(R.id.tvTitle);
         mCardView = itemView.findViewById(R.id.cardview);
-        Log.e(TAG, "MenuViewHolder() <<");
     }
 }

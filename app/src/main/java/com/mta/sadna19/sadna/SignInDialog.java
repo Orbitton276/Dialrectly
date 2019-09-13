@@ -29,7 +29,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 public class SignInDialog extends AppCompatDialogFragment {
-    public static final String TAG = "onSignInDialog";
     private Button btnSignInEmailPass;
     private TextView tvResetPassword;
     private SignInButton mGoogleSignInBtn;
@@ -44,10 +43,8 @@ public class SignInDialog extends AppCompatDialogFragment {
     private TextView textView,mEmail,mPass;
     private FirebaseUser fbUser;
 
-    //private AnalyticsManager analyticsManager = AnalyticsManager.getInstance();
     private String signInMethod = null;
     public SignInDialog(){
-        //googleButtonInit();
 
     }
 
@@ -107,7 +104,6 @@ public class SignInDialog extends AppCompatDialogFragment {
 
     private void googleSignInInit() {
 
-        Log.e(TAG, "googleSigninInit() >>" );
 
         // Configure Google Sign In
         gso = new GoogleSignInOptions
@@ -128,21 +124,17 @@ public class SignInDialog extends AppCompatDialogFragment {
             }
         });
         googleButtonInit();
-        Log.e(TAG, "googleSigninInit() <<" );
     }
 
     private void onGoogleSignIn() {
 
-        Log.e(TAG, "onGoogleSignIn() >>" );
 
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_GOOGLE_SIGN_IN);
-        Log.e(TAG, "onGoogleSignIn() <<" );
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
 
-        Log.e(TAG, "firebaseAuthWithGoogle() >>");
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -162,7 +154,6 @@ public class SignInDialog extends AppCompatDialogFragment {
                     }
                 });
 
-        Log.e(TAG, "firebaseAuthWithGoogle() <<");
 
     }
 
@@ -170,7 +161,6 @@ public class SignInDialog extends AppCompatDialogFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 
-        Log.e(TAG, "onActivityResult () >>");
 
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -182,37 +172,29 @@ public class SignInDialog extends AppCompatDialogFragment {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
-                Log.e(TAG, "try google sign in success () >>");
 
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Log.e(TAG, "Google sign in failed", e);
             }
         }
-        Log.e(TAG, "onActivityResult () <<");
     }
 
     private void firebaseInit() {
-        Log.e(TAG, "firebaseAuthenticationInit() >>");
         //Obtain reference to the current authentication
         mAuth = FirebaseAuth.getInstance();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                Log.e(TAG, "onAuthStateChanged() >>");
 
-                Log.e(TAG, "onAuthStateChanged() <<");
             }
         };
 
-        Log.e(TAG, "firebaseAuthenticationInit() <<");
     }
 
 
     public void onEmailPasswordAuthClick() {
 
-        Log.e(TAG, "onEmailPasswordSignUpClick() >>");
 
         String email = mEmail.getText().toString();
         String pass = mPass.getText().toString();
@@ -229,7 +211,6 @@ public class SignInDialog extends AppCompatDialogFragment {
 
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                Log.e(TAG, "Email/Pass Auth: onComplete() >> " + task.isSuccessful());
                 if (task.isSuccessful()){
                     Intent intent = new Intent(getActivity(), MenuListActivity.class);
                     startActivity(intent);
@@ -238,11 +219,9 @@ public class SignInDialog extends AppCompatDialogFragment {
                     Toast.makeText(getActivity().getApplicationContext(), "בעיה בהתחברות. אנא בדוק את הפרטים", Toast.LENGTH_SHORT).show();
                 }
 
-                Log.e(TAG, "Email/Pass Auth: onComplete() <<");
             }
         });
 
-        Log.e(TAG, "onEmailPasswordSignUpClick() <<");
     }
     public void onForgotPasswordClicked(){
         Intent intent = new Intent(getActivity(),resetPasswordActivity.class);

@@ -19,10 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ServerHandler {
-    private DatabaseReference singleMenuRef, allMenuRef;
-    private StorageReference storageRef;
-    private StorageReference imageStorageRef;
-    private static final String TAG = "onMenuFetcher";
+
     private OnServicesFetchedListener mOnServicesFetchedListener;
     private OnOptionFetchedListener mOnOptionFetcherListener;
     private OnUserFetchedListener mOnUserFetcherListener;
@@ -38,7 +35,7 @@ public class ServerHandler {
     private User mUser;
     private FirebaseUser fbUsr;
     interface onPrivacyPolicyFetchedListener {
-        public void OnPrivacyPolicyFetched(boolean i_privacyPolicy);
+         void OnPrivacyPolicyFetched(boolean i_privacyPolicy);
     }
     interface onFavoritesServicesFetchedListener {
         public void OnFavoritesServicesFetched(Map<String,ServiceItem> i_favoritesServicesArray);
@@ -113,13 +110,11 @@ public class ServerHandler {
                     case "DataOption": {
 
                         option = snap.getValue(DataOption.class);
-                        Log.e(TAG, "entered to If: Name - " + option.getName() + "Type -" + option.getType() + "dataType: " + ((DataOption) option).getDataType());
 
                         break;
                     }
                     case "Option": {
                         option = snap.getValue(Option.class);
-                        Log.e(TAG, "entered to If: Name - " + option.getName() + "Type -" + option.getType());
                         break;
                     }
 
@@ -132,12 +127,9 @@ public class ServerHandler {
 
     }
 
-    private String getMenuRef(String i_MenuName) {
-        return "Menus/" + i_MenuName + "/Menu";
-    }
+
 
     public void writeNewService(Option i_menu, ServiceItem service) {
-        Log.e(TAG, "onWriteMenu >>");
         DatabaseReference writeMenuRef;
 
         //write option
@@ -148,18 +140,15 @@ public class ServerHandler {
         //write genre
         writeMenuRef.child("Genre").setValue(service.getM_genre());
 
-        Log.e(TAG, "onWriteMenu <<");
     }
 
     public void fetchMenu(String i_menuName) {
 
-        Log.e(TAG, "onFetchFromServer >>");
         DatabaseReference serviceRef;
         serviceRef = FirebaseDatabase.getInstance().getReference("Menus/" + i_menuName);
         serviceRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.e(TAG, "onDataChanged >>");
                 Option menuTree = new Option();
 
                 ServiceItem serviceItem = new ServiceItem();
@@ -173,18 +162,14 @@ public class ServerHandler {
 
                 menuTree = extractMenuTree(dataSnapshot.child("Menu"), menuTree);
 
-                Log.e(TAG, "onDataChanged <<");
                 if (mOnOptionFetcherListener != null)
                     mOnOptionFetcherListener.OnMenuFetch(menuTree, serviceItem);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e(TAG, "onCancel >>");
-                Log.e(TAG, "onCancel <<");
             }
         });
-        Log.e(TAG, "onFetchFromServer <<");
     }
 
     public void fetchServices() {
@@ -223,9 +208,7 @@ public class ServerHandler {
     }
 
     public void writeUser(final User user) {
-        Log.e(TAG, user.toString());
         fbUsr = FirebaseAuth.getInstance().getCurrentUser();
-        Log.e(TAG,"id is: "+fbUsr.getUid());
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbUsr.getUid()+"/UserObject");
         if (user!=null)
             userRef.setValue(user);
@@ -247,7 +230,6 @@ public class ServerHandler {
                 User user = dataSnapshot.getValue(User.class);
                 if (user!=null)
                 {
-                    Log.e(TAG,"inUserFetch"+user.toString());
 
                     if (mOnUserFetcherListener != null)
                         mOnUserFetcherListener.OnUserFetch(user);
@@ -266,7 +248,6 @@ public class ServerHandler {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Boolean res = (Boolean) dataSnapshot.getValue();
 
-                Log.e(TAG,"res "+res);
                 mUser.SetPrivacyPolicy(res);
 
             }
@@ -315,7 +296,6 @@ public class ServerHandler {
     public void fetchUserLastCall() {
         fbUsr = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users/" + fbUsr.getUid()+"/LastCall");
-        //DatabaseReference userDataRef = userRef.child("lastCallPathName");
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

@@ -25,15 +25,14 @@ public class ReportProblemDialog extends AppCompatDialogFragment {
 
     Button btnOption1,btnOption2,btnOption3,btnReport;
     OnSendReportClicked mOnSendReportClicked;
-    TextView tvServiceName,tvLastCallItem,tvTitle,tvFreeText;
+    TextView tvServiceName,tvLastCallItem,tvFreeText;
     ImageButton btnCoins;
     TextView btnNumberOfPoints;
     ImageView imgService;
-    ServerHandler mServerHandler;
     String fullPath,dialPath;
     MenuProblem menuProblem ;
     public interface OnSendReportClicked{
-        public void OnSendReport(MenuProblem i_menuProblem);
+         void OnSendReport(MenuProblem i_menuProblem);
     }
 
     public void SetOnSendReportClicked(OnSendReportClicked iOnSendReportClicked)
@@ -50,16 +49,13 @@ public class ReportProblemDialog extends AppCompatDialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.report_layout,null);
         builder.setView(view);
-        //mServerHandler = new ServerHandler();
         tvFreeText = view.findViewById(R.id.tvBody);
-        //tvTitle = view.findViewById(R.id.tvTitle);
         btnReport = view.findViewById(R.id.btnSendReport);
         imgService = view.findViewById(R.id.imgService);
         tvServiceName = view.findViewById(R.id.tvServiceName);
         tvLastCallItem = view.findViewById(R.id.tvLastCallItem);
         btnCoins = view.findViewById(R.id.btnCoins);
         btnNumberOfPoints = view.findViewById(R.id.pointsNumber);
-        //tvLastCallItem = view.findViewById(R.id.tvServiceName);
         menuProblem = new MenuProblem();
         tvServiceName.setText(getArguments().get("service_name").toString());
         tvLastCallItem.setText(getArguments().get("last_call").toString());
@@ -73,7 +69,6 @@ public class ReportProblemDialog extends AppCompatDialogFragment {
         btnReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //init MenuProblem
 
 
                 btnNumberOfPoints.setVisibility(View.VISIBLE);
@@ -91,7 +86,6 @@ public class ReportProblemDialog extends AppCompatDialogFragment {
                 }, 2000);
 
 
-                //mServerHandler.writeAProblem(menuProblem);
 
             }
         });

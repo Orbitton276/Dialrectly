@@ -2,31 +2,25 @@ package com.mta.sadna19.sadna.Adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.mta.sadna19.sadna.R;
-import com.mta.sadna19.sadna.SpinnerItem;
 
 import java.util.ArrayList;
 
 public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryRecyclerAdapter.ViewHolder> {
 
 
-    private ArrayList<String> mCategories = new ArrayList<>( );
-    private Context mContext;
+    private ArrayList<String> mCategories;
+    protected Context mContext;
     private OnCategoryItemClickedListener mOnCategoryItemClickedListener;
 
     public interface OnCategoryItemClickedListener{
-        public void onCategoryClicked(String i_category);
+        void onCategoryClicked(String i_category);
     }
 
     public void SetOnCategoryClickedListener(OnCategoryItemClickedListener iOnCategoryItemClickedListener){
@@ -54,7 +48,6 @@ public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryRecycl
         viewHolder.catTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //category was clicked
                 if (mOnCategoryItemClickedListener!=null)
                 {
                     mOnCategoryItemClickedListener.onCategoryClicked(mCategories.get(i));

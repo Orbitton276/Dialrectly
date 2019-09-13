@@ -34,7 +34,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SignUpDialog extends AppCompatDialogFragment {
-    public static final String TAG = "SignUpDialog";
     private FirebaseAuth mAuth;
     private EditText mEmail, mDisplayName;
     private EditText mID, mPhone;
@@ -75,21 +74,17 @@ public class SignUpDialog extends AppCompatDialogFragment {
 
     private void firebaseAuthenticationInit() {
 
-        Log.e(TAG, "firebaseAuthenticationInit() >>");
         //Obtain reference to the current authentication
         mAuth = FirebaseAuth.getInstance();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                Log.e(TAG, "onAuthStateChanged() >>");
 
 
-                Log.e(TAG, "onAuthStateChanged() <<");
             }
         };
 
-        Log.e(TAG, "firebaseAuthenticationInit() <<");
     }
 
 
@@ -147,7 +142,6 @@ public class SignUpDialog extends AppCompatDialogFragment {
 
     public void onEmailPasswordSignUpClick() {
 
-        Log.e(TAG, "onEmailPasswordSignUpClick() >>");
 
         String email = mEmail.getText().toString();
         String pass = mPass.getText().toString();
@@ -168,7 +162,6 @@ public class SignUpDialog extends AppCompatDialogFragment {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
 
-                    Log.e(TAG, "Email/Pass Auth: onComplete() >> " + task.isSuccessful());
                     FirebaseUser user = mAuth.getCurrentUser();
 
                     if (task.isSuccessful()) {
@@ -181,7 +174,6 @@ public class SignUpDialog extends AppCompatDialogFragment {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            Log.d(TAG, "User profile updated.");
                                         }
                                     }
                                 });
@@ -196,13 +188,11 @@ public class SignUpDialog extends AppCompatDialogFragment {
                     }
 
 
-                    Log.e(TAG, "Email/Pass Auth: onComplete() <<");
                 }
             });
         }
 
 
-        Log.e(TAG, "onEmailPasswordSignUpClick() <<");
     }
 
 }

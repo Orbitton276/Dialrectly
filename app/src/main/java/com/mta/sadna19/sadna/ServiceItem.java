@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 public class ServiceItem implements Parcelable {
 
-    private static final String TAG = "onServiceItem";
 
 
     private String m_avatar;
